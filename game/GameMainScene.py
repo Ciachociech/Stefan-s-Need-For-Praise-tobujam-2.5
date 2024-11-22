@@ -10,6 +10,7 @@ class GameMainScene(common.Scene):
     def __init__(self, window):
         super().__init__("GameMainScene", window)
         self.stefan = game.Stefan()
+        self.indicator = game.Indicator("OptionsIndicator")
         self.input_cooldown = 0
         # text/options related things
         self.font = drawable.Font("OptionsFont")
@@ -38,7 +39,8 @@ class GameMainScene(common.Scene):
             return self.options_counter + 1
 
     def render(self, color = pygame.Color(255, 255, 255, 255)):
-        self.stefan.render(self.window.window, (100, 100))
+        self.stefan.render(self.window.window)
+        self.indicator.render(self.window.window)
         for i in range(3):
             self.font.render_text(self.window.window,
                                   self.options_texts[(self.options_counter + i - 1) % len(self.options_texts)], color, (120 + 240 * i, 600), True)
