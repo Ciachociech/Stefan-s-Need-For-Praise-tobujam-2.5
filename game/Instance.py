@@ -1,28 +1,31 @@
-from enum import Enum
+from enum import IntEnum
 
 import pygame
 
+import game.GameMainScene
 import system.Display
 
 
-class InstanceState(Enum):
-    none = 0
+class InstanceState(IntEnum):
+    none = 0,
+    game = 1
     # add more states like title-screen, menu, game and game-over
 
 
 class Instance:
     def __init__(self):
         pygame.init()
-        self.display = system.Display(1280, 720, "pygame Template")
+        self.display = system.Display(720, 720, "bulonais-5")
         self.display.set_icon("assets/sprites/WIP32x32.png")
         self.display.frames = 60
-        self.actualState = InstanceState.none
+        self.actualState = InstanceState.game
         self.previousState = InstanceState.none
         self.scenes = []
         '''
         load scenes like:
         self.scenes.append(Scene("tag", self.display))
         '''
+        self.scenes.append(game.GameMainScene(self.display))
 
     '''
     after updating call this like:
@@ -41,15 +44,11 @@ class Instance:
 
             self.display.clear()
 
-            if self.actualState == InstanceState.none:
-                '''
-                # scene process input like:
-                scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick, pygame.mouse.get_pressed(), pygame.mouse.get_pos())
-                # scene update
-                scene.update()
-                # scene(s) render
-                scene.render()
-                '''
+            if self.actualState != InstanceState.none:
+                actual_scene = self.scenes[self.actualState - 1]
+                actual_scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick, pygame.mouse.get_pressed(), pygame.mouse.get_pos())
+                actual_scene.update()
+                actual_scene.render()
                 pass
 
             self.display.display_and_wait()
