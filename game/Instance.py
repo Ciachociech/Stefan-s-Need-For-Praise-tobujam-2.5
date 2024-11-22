@@ -53,7 +53,18 @@ class Instance:
                     self.update_instance_states(InstanceState.game)
                 case InstanceState.game:
                     actual_scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick, pygame.mouse.get_pressed(), pygame.mouse.get_pos())
-                    actual_scene.update()
+                    match actual_scene.update():
+                        case 1:
+                            pass
+                        case 2:
+                            pass
+                        case 3:
+                            pass
+                        case 4:
+                            pygame.quit()
+                            return
+                        case _:
+                            pass
                     actual_scene.render()
                 case _:
                     pass
