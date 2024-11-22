@@ -1,12 +1,14 @@
 import pygame
 
 import common.Scene
+import game.Stefan
+
 
 class GameMainScene(common.Scene):
 
     def __init__(self, window):
         super().__init__("GameMainScene", window)
-        self.main_sprite = common.Object("main_sprite", "assets/sprites/WIP32x32.png")
+        self.stefan = game.Stefan()
 
 
     def process_input(self, keyboard_input, joystick, mouse_input, mouse_position):
@@ -16,4 +18,4 @@ class GameMainScene(common.Scene):
         pass
 
     def render(self, color = pygame.Color(255, 255, 255, 255)):
-        self.main_sprite.render(self.window.window, (100, 100))
+        self.stefan.render(self.window.window, (100, 100))

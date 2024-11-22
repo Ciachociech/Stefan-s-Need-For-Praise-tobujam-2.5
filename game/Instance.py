@@ -18,7 +18,7 @@ class Instance:
         self.display = system.Display(720, 720, "bulonais-5")
         self.display.set_icon("assets/sprites/WIP32x32.png")
         self.display.frames = 60
-        self.actualState = InstanceState.game
+        self.actualState = InstanceState.none
         self.previousState = InstanceState.none
         self.scenes = []
         '''
@@ -44,12 +44,19 @@ class Instance:
 
             self.display.clear()
 
+            actual_scene = None
             if self.actualState != InstanceState.none:
                 actual_scene = self.scenes[self.actualState - 1]
-                actual_scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick, pygame.mouse.get_pressed(), pygame.mouse.get_pos())
-                actual_scene.update()
-                actual_scene.render()
-                pass
+
+            match self.actualState:
+                case InstanceState.none:
+                    self.update_instance_states(InstanceState.game)
+                case InstanceState.game:
+                    actual_scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick, pygame.mouse.get_pressed(), pygame.mouse.get_pos())
+                    actual_scene.update()
+                    actual_scene.render()
+                case _:
+                    pass
 
             self.display.display_and_wait()
 
