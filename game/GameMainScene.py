@@ -13,7 +13,7 @@ class GameMainScene(common.Scene):
         self.input_cooldown = 0
         # text related things
         self.font = drawable.Font("OptionsFont")
-        self.font.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 24)
+        self.font.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 48)
         self.options_texts = ["ACTIONS", "STATISTICS", "UPGRADES", "SAVE & EXIT"]
         self.options_counter = 0
 
@@ -35,5 +35,5 @@ class GameMainScene(common.Scene):
         self.stefan.render(self.window.window, (100, 100))
         for i in range(3):
             self.font.render_text(self.window.window,
-                                  self.options_texts[(self.options_counter + i) % len(self.options_texts)], color, (100 + 150 * i, 300))
+                                  self.options_texts[(self.options_counter + i) % len(self.options_texts)], color, (120 + 240 * i, 600), True)
 
