@@ -3,6 +3,7 @@ from enum import IntEnum
 import pygame
 
 import game.scenes.Game
+import game.scenes.Gameover
 import game.scenes.Statistics
 import system.Display
 
@@ -10,8 +11,8 @@ import system.Display
 class InstanceState(IntEnum):
     none = 0,
     game = 1,
-    stats = 2
-    # add more states like title-screen, menu, game and game-over
+    stats = 2,
+    gameover = 3    # change to 4, when upgrades scene will be WIP
 
 
 class Instance:
@@ -28,6 +29,7 @@ class Instance:
         self.scenes = []
         self.scenes.append(game.scenes.Game(self.display))
         self.scenes.append(game.scenes.Statistics(self.display, self.statistics))
+        self.scenes.append(game.scenes.Gameover(self.display, self.statistics))
 
     def update_instance_states(self, new_state):
         self.previousState = self.actualState
@@ -52,7 +54,7 @@ class Instance:
             match self.actualState:
                 case InstanceState.none:
                     self.update_instance_states(InstanceState.game)
-                    self.scenes[self.actualState - 1].set(game.GameStatistics())
+                    self.scenes[self.actualState - 1].set(self.statistics)
                 case InstanceState.game:
                     actual_scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick,
                                                pygame.mouse.get_pressed(), pygame.mouse.get_pos())
@@ -65,7 +67,8 @@ class Instance:
                             pygame.quit()
                             return
                         case 0:
-                            # TODO: add gameover screen
+                            self.update_instance_states(InstanceState.gameover)
+                            self.scenes[self.actualState - 1].set()
                             pass
                         case _:
                             pass
@@ -75,6 +78,21 @@ class Instance:
                                                pygame.mouse.get_pressed(), pygame.mouse.get_pos())
                     if actual_scene.update():
                         self.update_instance_states(InstanceState.game)
+                    previous_scene.render()
+                    actual_scene.render()
+                case InstanceState.gameover:
+                    actual_scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick,
+                                               pygame.mouse.get_pressed(), pygame.mouse.get_pos())
+                    match actual_scene.update():
+                        case 1:
+                            self.update_instance_states(InstanceState.game)
+                            self.statistics = game.GameStatistics()
+                            self.scenes[self.actualState - 1].set(self.statistics)
+                        case -1:
+                            pygame.quit()
+                            return
+                        case _:
+                            pass
                     previous_scene.render()
                     actual_scene.render()
                 case _:

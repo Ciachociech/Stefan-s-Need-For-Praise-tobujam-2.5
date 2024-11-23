@@ -10,7 +10,7 @@ class Game(common.Scene):
 
     def __init__(self, window):
         super().__init__("GameMainScene", window)
-        # variables set during restarting game
+        # variables set during restarting scene
         self.input_cooldown = None
         self.main_options_counter = None
         self.action_options_counter = None
@@ -35,6 +35,7 @@ class Game(common.Scene):
     def process_input(self, keyboard_input, joystick, mouse_input, mouse_position):
         if self.input_cooldown >= 0:
             return
+
         if keyboard_input[pygame.K_LEFT] or keyboard_input[pygame.K_a]:
             if self.main_options_counter >= 0:
                 self.main_options_counter = (self.main_options_counter - 1) % len(self.main_options_texts)
@@ -53,7 +54,7 @@ class Game(common.Scene):
 
     def update(self):
         self.stefan.update()
-        if self.stefan.statistics.check_lose_condition():
+        if self.stefan.statistics.check_lose_condition() != 0:
             return 0
 
         self.input_cooldown -= 1
