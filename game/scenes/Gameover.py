@@ -15,8 +15,10 @@ class Gameover(common.Scene):
         self.is_option_chosen = None
         self.statistics = None
         # text/options related things
-        self.font = drawable.Font("OptionsFont")
-        self.font.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 28)
+        self.font_bigger = drawable.Font("OptionsFont36")
+        self.font_bigger.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 36)
+        self.font_smaller = drawable.Font("OptionsFont28")
+        self.font_smaller.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 28)
         self.options_texts = ["start over", "exit"]
         self.indicator = game.objects.Indicator("OptionsIndicator")
         # strings
@@ -56,7 +58,7 @@ class Gameover(common.Scene):
 
     def update(self):
         self.input_cooldown -= 1
-        self.indicator.position = (130 + 335 * self.options_counter, 500)
+        self.indicator.position = (110 + 345 * self.options_counter, 500)
 
         if self.is_option_chosen:
             self.is_option_chosen = True
@@ -68,7 +70,7 @@ class Gameover(common.Scene):
         pygame.draw.rect(self.window.window, pygame.Color(255, 255, 255, 255),(60, 180, 600, 360), width=8)
 
         # text rendering
-        self.font.render_text(self.window.window, self.gameover_title, color, (360, 220), "center")
+        self.font_bigger.render_text(self.window.window, self.gameover_title, color, (360, 220), "center")
         no_lines = 0
         gameover_text = None
         if self.statistics.check_lose_condition() > 0:
@@ -76,9 +78,9 @@ class Gameover(common.Scene):
         else:
             gameover_text = self.gameover_too_bad
         for text_line in gameover_text:
-            self.font.render_text(self.window.window, text_line, color, (80, 260 + 40 * no_lines))
+            self.font_smaller.render_text(self.window.window, text_line, color, (80, 260 + 40 * no_lines))
             no_lines += 1
-        self.font.render_text(self.window.window, self.options_texts[0], color, (210, 500), "center")
-        self.font.render_text(self.window.window, self.options_texts[1], color, (510, 500), "center")
+        self.font_bigger.render_text(self.window.window, self.options_texts[0], color, (210, 500), "center")
+        self.font_bigger.render_text(self.window.window, self.options_texts[1], color, (510, 500), "center")
 
         self.indicator.render(self.window.window)

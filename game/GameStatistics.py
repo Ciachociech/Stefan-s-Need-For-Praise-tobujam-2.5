@@ -36,7 +36,7 @@ class GameStatistics:
 
     def update(self):
         self.frames += 1
-        if self.frames % 60 == 0:  # final value can be changed, probably smaller than actual
+        if self.frames % 600 == 0:  # final value can be changed, probably smaller than actual
             self.update_needs()
         if self.frames % 600 == 0:
             self.poops += 1

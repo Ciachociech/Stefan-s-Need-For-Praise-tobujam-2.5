@@ -12,8 +12,10 @@ class Upgrades(common.Scene):
         self.animation_frames = 0
         self.statistics = statistics
         # text related things
-        self.font = drawable.Font("OptionsFont")
-        self.font.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 28)
+        self.font_bigger = drawable.Font("OptionsFont36")
+        self.font_bigger.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 36)
+        self.font_smaller = drawable.Font("OptionsFont28")
+        self.font_smaller.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 28)
         self.upgrades_title = "upgrades shop"
         self.currency_title = "poops: 0"
 
@@ -43,5 +45,5 @@ class Upgrades(common.Scene):
         pygame.draw.rect(self.window.window, pygame.Color(255, 255, 255, 255),(60, frame_shift, 600, 200), width=8)
 
         # text rendering
-        self.font.render_text(self.window.window, self.upgrades_title, color, (80, frame_shift + 20), "topleft")
-        self.font.render_text(self.window.window, self.currency_title, color, (640, frame_shift + 20), "topright")
+        self.font_bigger.render_text(self.window.window, self.upgrades_title, color, (80, frame_shift + 20), "topleft")
+        self.font_bigger.render_text(self.window.window, self.currency_title, color, (640, frame_shift + 20), "topright")
