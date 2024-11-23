@@ -20,11 +20,14 @@ class Instance:
         self.display = system.Display(720, 720, "bulonais-5")
         self.display.set_icon("assets/sprites/WIP32x32.png")
         self.display.frames = 60
+        self.statistics = game.GameStatistics()
+
         self.actualState = InstanceState.none
         self.previousState = InstanceState.none
+
         self.scenes = []
         self.scenes.append(game.scenes.Game(self.display))
-        self.scenes.append(game.scenes.Statistics(self.display, self.scenes[0].stefan.statistics))
+        self.scenes.append(game.scenes.Statistics(self.display, self.statistics))
 
     def update_instance_states(self, new_state):
         self.previousState = self.actualState
@@ -49,6 +52,7 @@ class Instance:
             match self.actualState:
                 case InstanceState.none:
                     self.update_instance_states(InstanceState.game)
+                    self.scenes[self.actualState - 1].set(game.GameStatistics())
                 case InstanceState.game:
                     actual_scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick,
                                                pygame.mouse.get_pressed(), pygame.mouse.get_pos())
@@ -62,6 +66,7 @@ class Instance:
                             return
                         case 0:
                             # TODO: add gameover screen
+                            pass
                         case _:
                             pass
                     actual_scene.render()

@@ -10,18 +10,27 @@ class Game(common.Scene):
 
     def __init__(self, window):
         super().__init__("GameMainScene", window)
+        # variables set during restarting game
+        self.input_cooldown = None
+        self.main_options_counter = None
+        self.action_options_counter = None
+        self.is_option_chosen = None
+        # objects
         self.stefan = game.objects.Stefan()
         self.indicator = game.objects.Indicator("OptionsIndicator")
-        self.input_cooldown = 0
         # text/options related things
         self.font = drawable.Font("OptionsFont")
         self.font.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 48)
         self.main_options_texts = ["actions", "statistics", "upgrades", "save & exit"]
-        self.main_options_counter = 0
         self.action_options_texts = ["feed", "pet", "snack ball", "clean", "hide & seek", "toy", "bowling", "back"]
+
+
+    def set(self, statistics):
+        self.stefan.set(statistics)
+        self.input_cooldown = 0
+        self.main_options_counter = 0
         self.action_options_counter = -1
         self.is_option_chosen = False
-
 
     def process_input(self, keyboard_input, joystick, mouse_input, mouse_position):
         if self.input_cooldown >= 0:
