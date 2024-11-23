@@ -33,7 +33,7 @@ class Gameover(common.Scene):
                                   "try again if you dare."]
 
     def set(self):
-        self.input_cooldown = 0
+        self.input_cooldown = 120
         self.options_counter = 0
         self.is_option_chosen = False
 
