@@ -22,7 +22,7 @@ class Game(common.Scene):
         self.font = drawable.Font("OptionsFont")
         self.font.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 48)
         self.main_options_texts = ["actions", "statistics", "upgrades", "save & exit"]
-        self.action_options_texts = ["feed", "pet", "snack ball", "clean", "hide & seek", "toy", "bowling", "back"]
+        self.action_options_texts = ["feed", "pet", "clean", "snack ball", "hide & seek", "toy", "bowling", "back"]
 
 
     def set(self, statistics):
@@ -60,16 +60,34 @@ class Game(common.Scene):
         self.input_cooldown -= 1
         if self.is_option_chosen:
             self.is_option_chosen = False
+
+            # if actions option from main menu is chosen
             if self.main_options_counter == 0:
                 self.main_options_counter = -1
                 self.action_options_counter = 0
+                return
+            # any other option from main menu is chosen
             elif self.main_options_counter >= 1:
                 return self.main_options_counter + 1
-            elif self.action_options_counter == len(self.action_options_texts) - 1:
-                self.main_options_counter = 0
-                self.action_options_counter = -1
-            elif self.action_options_counter >= 0:
-                return -self.action_options_counter - 1
+
+            match self.action_options_counter:
+                # if back option from actions menu is chosen
+                case 7: # len(self.action_options_texts) - 1 - but Python doesn't allow this
+                    pass
+                # simple actions (first three) from actions menu is chosen
+                case 0:
+                    self.stefan.statistics.update_needs((10, 10, 0, 30))
+                case 1:
+                    self.stefan.statistics.update_needs((20, 20, 0, 10))
+                case 2:
+                    self.stefan.statistics.update_needs((10, 10, -10, 0))
+                # any other option (mini-games) from actions menu is chosen
+                case _:
+                    return -self.action_options_counter - 1
+            # go back to main menu anyway
+            self.main_options_counter = 0
+            self.action_options_counter = -1
+
 
     def render(self, color = pygame.Color(255, 255, 255, 255)):
         self.stefan.render(self.window.window)
