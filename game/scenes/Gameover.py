@@ -7,18 +7,18 @@ import game.objects.Indicator
 
 class Gameover(common.Scene):
 
-    def __init__(self, window, statistics):
+    def __init__(self, window):
         super().__init__("GameoverScene", window)
         # variables set during restarting scene
         self.input_cooldown = None
         self.options_counter = None
         self.is_option_chosen = None
+        self.statistics = None
         # text/options related things
         self.font = drawable.Font("OptionsFont")
         self.font.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 28)
         self.options_texts = ["start over", "exit"]
         self.indicator = game.objects.Indicator("OptionsIndicator")
-        self.statistics = statistics
         # strings
         self.gameover_title = "game over"
         self.gameover_too_bad = ["Stefan has been neglected, so decided too run",
@@ -32,10 +32,11 @@ class Gameover(common.Scene):
                                   "begin. Of course, tides of time can allow you to",
                                   "try again if you dare."]
 
-    def set(self):
+    def set(self, statistics):
         self.input_cooldown = 120
         self.options_counter = 0
         self.is_option_chosen = False
+        self.statistics = statistics
 
     def process_input(self, keyboard_input, joystick, mouse_input, mouse_position):
         if self.input_cooldown >= 0:

@@ -33,7 +33,7 @@ class Instance:
         self.scenes.append(game.scenes.Game(self.display))
         self.scenes.append(game.scenes.Statistics(self.display, self.statistics))
         self.scenes.append(game.scenes.Upgrades(self.display, self.statistics))
-        self.scenes.append(game.scenes.Gameover(self.display, self.statistics))
+        self.scenes.append(game.scenes.Gameover(self.display))
 
     def update_instance_states(self, new_state):
         self.previousState = self.actualState
@@ -55,6 +55,10 @@ class Instance:
             if self.previousState != InstanceState.none:
                 previous_scene = self.scenes[self.previousState - 1]
 
+            # there will be "only one" element updated exclusively beyond actual scene
+            if self.actualState != InstanceState.none and self.actualState != InstanceState.gameover:
+                self.statistics.update()
+
             match self.actualState:
                 case InstanceState.none:
                     self.update_instance_states(InstanceState.game)
@@ -72,7 +76,7 @@ class Instance:
                             return
                         case 0:
                             self.update_instance_states(InstanceState.gameover)
-                            self.scenes[self.actualState - 1].set()
+                            self.scenes[self.actualState - 1].set(self.statistics)
                             pass
                         case _:
                             pass
@@ -80,8 +84,6 @@ class Instance:
                 case InstanceState.stats | InstanceState.upgrades:
                     actual_scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick,
                                                pygame.mouse.get_pressed(), pygame.mouse.get_pos())
-                    if previous_scene.update() == 0:
-                        self.update_instance_states(InstanceState.game)
                     if actual_scene.update():
                         self.update_instance_states(InstanceState.game)
                     previous_scene.render()

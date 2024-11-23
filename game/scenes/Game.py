@@ -14,6 +14,7 @@ class Game(common.Scene):
     def __init__(self, window):
         super().__init__("GameMainScene", window)
         # variables set during restarting scene
+        self.statistics = None
         self.input_cooldown = None
         self.main_options_counter = None
         self.action_options_counter = None
@@ -30,7 +31,7 @@ class Game(common.Scene):
 
 
     def set(self, statistics):
-        self.stefan.set(statistics)
+        self.statistics = statistics
         self.input_cooldown = 0
         self.main_options_counter = 0
         self.action_options_counter = -1
@@ -71,10 +72,9 @@ class Game(common.Scene):
             self.input_cooldown = 15
 
     def update(self):
-        self.stefan.update()
-        if self.stefan.statistics.check_lose_condition() != 0:
+        if self.statistics.check_lose_condition() != 0:
             return 0
-        if self.stefan.statistics.poops > 0 and len(self.poops_locations) < math.log2(self.stefan.statistics.poops + 1):
+        if self.statistics.poops > 0 and len(self.poops_locations) < math.log2(self.statistics.poops + 1):
             self.add_new_poop_location()
 
         self.input_cooldown -= 1
@@ -96,12 +96,12 @@ class Game(common.Scene):
                     pass
                 # simple actions (first three) from actions menu is chosen
                 case 0:
-                    self.stefan.statistics.update_needs((10, 10, 0, 30))
+                    self.statistics.update_needs((10, 10, 0, 30))
                 case 1:
-                    self.stefan.statistics.update_needs((20, 20, 0, 10))
+                    self.statistics.update_needs((20, 20, 0, 10))
                 case 2:
-                    self.stefan.statistics.update_needs((10, 10, -10, 0))
-                    self.stefan.statistics.change_poops_to_currency()
+                    self.statistics.update_needs((10, 10, -10, 0))
+                    self.statistics.change_poops_to_currency()
                     self.poops_locations = []
                 # any other option (mini-games) from actions menu is chosen
                 case _:
