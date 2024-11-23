@@ -2,15 +2,16 @@ import pygame
 
 import common.Scene
 import drawable.Font
-import game.Stefan
+import game.objects.Indicator
+import game.objects.Stefan
 
 
 class GameMainScene(common.Scene):
 
     def __init__(self, window):
         super().__init__("GameMainScene", window)
-        self.stefan = game.Stefan()
-        self.indicator = game.Indicator("OptionsIndicator")
+        self.stefan = game.objects.Stefan()
+        self.indicator = game.objects.Indicator("OptionsIndicator")
         self.input_cooldown = 0
         # text/options related things
         self.font = drawable.Font("OptionsFont")
@@ -37,7 +38,7 @@ class GameMainScene(common.Scene):
             elif self.action_options_counter >= 0:
                 self.action_options_counter = (self.action_options_counter + 1) % len(self.action_options_texts)
             self.input_cooldown = 30
-        elif keyboard_input[pygame.K_UP] or keyboard_input[pygame.K_w]:
+        elif keyboard_input[pygame.K_UP] or keyboard_input[pygame.K_DOWN] or keyboard_input[pygame.K_w] or keyboard_input[pygame.K_s]:
             self.is_option_chosen = True
             self.input_cooldown = 15
 

@@ -2,7 +2,7 @@ from enum import IntEnum
 
 import pygame
 
-import game.GameMainScene
+import game.scenes.GameMainScene
 import system.Display
 
 
@@ -25,7 +25,7 @@ class Instance:
         load scenes like:
         self.scenes.append(Scene("tag", self.display))
         '''
-        self.scenes.append(game.GameMainScene(self.display))
+        self.scenes.append(game.scenes.GameMainScene(self.display))
 
     '''
     after updating call this like:
