@@ -9,7 +9,8 @@ import system.Display
 
 class InstanceState(IntEnum):
     none = 0,
-    game = 1
+    game = 1,
+    stats = 2
     # add more states like title-screen, menu, game and game-over
 
 
@@ -54,10 +55,11 @@ class Instance:
                 case InstanceState.none:
                     self.update_instance_states(InstanceState.game)
                 case InstanceState.game:
-                    actual_scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick, pygame.mouse.get_pressed(), pygame.mouse.get_pos())
+                    actual_scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick,
+                                               pygame.mouse.get_pressed(), pygame.mouse.get_pos())
                     match actual_scene.update():
                         case 2:
-                            pass
+                            self.update_instance_states(InstanceState.stats)
                         case 3:
                             pass
                         case 4:
@@ -65,6 +67,12 @@ class Instance:
                             return
                         case _:
                             pass
+                    actual_scene.render()
+                case InstanceState.stats:
+                    actual_scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick,
+                                               pygame.mouse.get_pressed(), pygame.mouse.get_pos())
+                    if actual_scene.update():
+                        self.update_instance_states(InstanceState.game)
                     actual_scene.render()
                 case _:
                     pass

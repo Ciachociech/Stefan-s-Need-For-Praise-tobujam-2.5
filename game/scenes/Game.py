@@ -62,10 +62,10 @@ class Game(common.Scene):
         self.indicator.render(self.window.window)
 
         for i in range(3):
-            textPosition = (120 + 240 * i, 600)
+            text_position = (120 + 240 * i, 600)
             if self.main_options_counter >= 0:
                 self.font.render_text(self.window.window, self.main_options_texts[
-                    (self.main_options_counter + i - 1) % len(self.main_options_texts)], color, textPosition, True)
+                    (self.main_options_counter + i - 1) % len(self.main_options_texts)], color, text_position, True)
             elif self.action_options_counter >= 0:
                 self.font.render_text(self.window.window, self.action_options_texts[
-                    (self.action_options_counter + i - 1) % len(self.action_options_texts)], color, textPosition, True)
+                    (self.action_options_counter + i - 1) % len(self.action_options_texts)], color, text_position, True)
