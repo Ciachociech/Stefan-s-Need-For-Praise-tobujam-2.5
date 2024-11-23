@@ -21,11 +21,11 @@ class Gameover(common.Scene):
         self.statistics = statistics
         # strings
         self.gameover_title = "game over"
-        self.gameover_too_bad = ["Stefan has been neglected, so decided too choose",
-                                 "its new prophet which will pay more attention",
-                                 "and lead to new era of rabbit supremacy.",
-                                 "Of course, tides of time can allow you to try again",
-                                 "if you dare."]
+        self.gameover_too_bad = ["Stefan has been neglected, so decided too run",
+                                 "away and choose its new prophet which will pay",
+                                 "more attention and lead to new era of rabbit",
+                                 "supremacy. Of course, tides of time can allow you",
+                                 "to try again if you dare."]
         self.gameover_too_good = ["Stefan has been cared generously, so decided to",
                                   "conquer the world, soon the era of eternal rabbit",
                                   "supremacy and human extinction (your too) will",
@@ -67,7 +67,7 @@ class Gameover(common.Scene):
         pygame.draw.rect(self.window.window, pygame.Color(255, 255, 255, 255),(60, 180, 600, 360), width=8)
 
         # text rendering
-        self.font.render_text(self.window.window, self.gameover_title, color, (360, 220), True)
+        self.font.render_text(self.window.window, self.gameover_title, color, (360, 220), "center")
         no_lines = 0
         gameover_text = None
         if self.statistics.check_lose_condition() > 0:
@@ -75,9 +75,9 @@ class Gameover(common.Scene):
         else:
             gameover_text = self.gameover_too_bad
         for text_line in gameover_text:
-            self.font.render_text(self.window.window, text_line, color, (80, 260 + 40 * no_lines), False)
+            self.font.render_text(self.window.window, text_line, color, (80, 260 + 40 * no_lines))
             no_lines += 1
-        self.font.render_text(self.window.window, self.options_texts[0], color, (210, 500), True)
-        self.font.render_text(self.window.window, self.options_texts[1], color, (510, 500), True)
+        self.font.render_text(self.window.window, self.options_texts[0], color, (210, 500), "center")
+        self.font.render_text(self.window.window, self.options_texts[1], color, (510, 500), "center")
 
         self.indicator.render(self.window.window)

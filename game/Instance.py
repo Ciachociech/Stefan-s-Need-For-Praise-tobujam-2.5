@@ -9,10 +9,11 @@ import system.Display
 
 
 class InstanceState(IntEnum):
-    none = 0,
-    game = 1,
-    stats = 2,
-    gameover = 3    # change to 4, when upgrades scene will be WIP
+    none = 0
+    game = 1
+    stats = 2
+    upgrades = 3
+    gameover = 4
 
 
 class Instance:
@@ -31,6 +32,7 @@ class Instance:
         self.scenes = []
         self.scenes.append(game.scenes.Game(self.display))
         self.scenes.append(game.scenes.Statistics(self.display, self.statistics))
+        self.scenes.append(game.scenes.Upgrades(self.display, self.statistics))
         self.scenes.append(game.scenes.Gameover(self.display, self.statistics))
 
     def update_instance_states(self, new_state):
@@ -64,7 +66,7 @@ class Instance:
                         case 2:
                             self.update_instance_states(InstanceState.stats)
                         case 3:
-                            pass
+                            self.update_instance_states(InstanceState.upgrades)
                         case 4:
                             pygame.quit()
                             return
@@ -75,7 +77,7 @@ class Instance:
                         case _:
                             pass
                     actual_scene.render()
-                case InstanceState.stats:
+                case InstanceState.stats | InstanceState.upgrades:
                     actual_scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick,
                                                pygame.mouse.get_pressed(), pygame.mouse.get_pos())
                     if previous_scene.update() == 0:
