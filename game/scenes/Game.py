@@ -1,3 +1,6 @@
+import math
+import random
+
 import pygame
 
 import common.Scene
@@ -15,6 +18,7 @@ class Game(common.Scene):
         self.main_options_counter = None
         self.action_options_counter = None
         self.is_option_chosen = None
+        self.poops_locations = None
         # objects
         self.stefan = game.objects.Stefan()
         self.indicator = game.objects.Indicator("OptionsIndicator")
@@ -31,6 +35,20 @@ class Game(common.Scene):
         self.main_options_counter = 0
         self.action_options_counter = -1
         self.is_option_chosen = False
+        self.poops_locations = []
+
+    def add_new_poop_location(self):
+        location_x = random.randint(0, 256)
+        location_y = random.randint(0, 256)
+        if location_x >= 128:
+            location_x += 448
+        else:
+            location_x += 16
+        if location_y >= 128:
+            location_y += 448
+        else:
+            location_y += 16
+        self.poops_locations.append((location_x, location_y))
 
     def process_input(self, keyboard_input, joystick, mouse_input, mouse_position):
         if self.input_cooldown >= 0:
@@ -56,6 +74,8 @@ class Game(common.Scene):
         self.stefan.update()
         if self.stefan.statistics.check_lose_condition() != 0:
             return 0
+        if self.stefan.statistics.poops > 0 and len(self.poops_locations) < math.log2(self.stefan.statistics.poops + 1):
+            self.add_new_poop_location()
 
         self.input_cooldown -= 1
         if self.is_option_chosen:
@@ -81,6 +101,8 @@ class Game(common.Scene):
                     self.stefan.statistics.update_needs((20, 20, 0, 10))
                 case 2:
                     self.stefan.statistics.update_needs((10, 10, -10, 0))
+                    self.stefan.statistics.change_poops_to_currency()
+                    self.poops_locations = []
                 # any other option (mini-games) from actions menu is chosen
                 case _:
                     return -self.action_options_counter - 1
@@ -90,6 +112,10 @@ class Game(common.Scene):
 
 
     def render(self, color = pygame.Color(255, 255, 255, 255)):
+        for poop in self.poops_locations:
+            pygame.draw.circle(self.window.window, pygame.Color(155, 103, 60, 255), poop, 16)
+            pygame.draw.circle(self.window.window, pygame.Color(102, 70, 40, 255), poop, 16, 2)
+
         self.stefan.render(self.window.window)
         self.indicator.render(self.window.window)
 

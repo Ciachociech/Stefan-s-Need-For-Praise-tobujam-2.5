@@ -63,9 +63,8 @@ class Gameover(common.Scene):
 
     def render(self, color = pygame.Color(255, 255, 255, 255)):
         # frame background
-        frame_surface = pygame.draw.rect(self.window.window, pygame.Color(0, 0, 0, 191), (60, 180, 600, 360))
-        frame_surface = pygame.draw.rect(self.window.window, pygame.Color(255, 255, 255, 255),
-                                         (60, 180, 600, 360), width=8)
+        pygame.draw.rect(self.window.window, pygame.Color(0, 0, 0, 191), (60, 180, 600, 360))
+        pygame.draw.rect(self.window.window, pygame.Color(255, 255, 255, 255),(60, 180, 600, 360), width=8)
 
         # text rendering
         self.font.render_text(self.window.window, self.gameover_title, color, (360, 220), True)
