@@ -2,6 +2,15 @@ class GameStatistics:
 
     def __init__(self):
         # overall
+        self.frames = None
+        # needs
+        self.attention = None
+        self.power = None
+        self.destruction = None
+        self.satisfaction = None
+
+    def set(self):
+        # overall
         self.frames = 0
         # needs
         self.attention = 50
@@ -17,7 +26,7 @@ class GameStatistics:
 
     def update(self):
         self.frames += 1
-        if self.frames % 60 == 0:
+        if self.frames % 600 == 0:
             self.update_needs()
 
     def check_lose_condition(self):

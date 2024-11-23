@@ -21,7 +21,9 @@ class Instance:
         self.display = system.Display(720, 720, "bulonais-5")
         self.display.set_icon("assets/sprites/WIP32x32.png")
         self.display.frames = 60
+
         self.statistics = game.GameStatistics()
+        self.statistics.set()   # temporary
 
         self.actualState = InstanceState.none
         self.previousState = InstanceState.none
@@ -76,6 +78,8 @@ class Instance:
                 case InstanceState.stats:
                     actual_scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick,
                                                pygame.mouse.get_pressed(), pygame.mouse.get_pos())
+                    if previous_scene.update() == 0:
+                        self.update_instance_states(InstanceState.game)
                     if actual_scene.update():
                         self.update_instance_states(InstanceState.game)
                     previous_scene.render()
@@ -86,8 +90,7 @@ class Instance:
                     match actual_scene.update():
                         case 1:
                             self.update_instance_states(InstanceState.game)
-                            self.statistics = game.GameStatistics()
-                            self.scenes[self.actualState - 1].set(self.statistics)
+                            self.statistics.set()
                         case -1:
                             pygame.quit()
                             return
