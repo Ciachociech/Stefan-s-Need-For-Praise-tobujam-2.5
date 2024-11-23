@@ -1,1 +1,1 @@
-from .GameMainScene import GameMainScene
+from .Game import Game

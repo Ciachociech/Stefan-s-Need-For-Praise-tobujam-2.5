@@ -2,7 +2,8 @@ from enum import IntEnum
 
 import pygame
 
-import game.scenes.GameMainScene
+import game.scenes.Game
+import game.scenes.Statistics
 import system.Display
 
 
@@ -25,7 +26,8 @@ class Instance:
         load scenes like:
         self.scenes.append(Scene("tag", self.display))
         '''
-        self.scenes.append(game.scenes.GameMainScene(self.display))
+        self.scenes.append(game.scenes.Game(self.display))
+        self.scenes.append(game.scenes.Statistics(self.display))
 
     '''
     after updating call this like:
@@ -54,8 +56,6 @@ class Instance:
                 case InstanceState.game:
                     actual_scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick, pygame.mouse.get_pressed(), pygame.mouse.get_pos())
                     match actual_scene.update():
-                        case 1:
-                            pass
                         case 2:
                             pass
                         case 3:

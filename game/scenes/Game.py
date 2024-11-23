@@ -6,7 +6,7 @@ import game.objects.Indicator
 import game.objects.Stefan
 
 
-class GameMainScene(common.Scene):
+class Game(common.Scene):
 
     def __init__(self, window):
         super().__init__("GameMainScene", window)
