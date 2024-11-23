@@ -23,10 +23,6 @@ class Instance:
         self.actualState = InstanceState.none
         self.previousState = InstanceState.none
         self.scenes = []
-        '''
-        load scenes like:
-        self.scenes.append(Scene("tag", self.display))
-        '''
         self.scenes.append(game.scenes.Game(self.display))
         self.scenes.append(game.scenes.Statistics(self.display))
 
