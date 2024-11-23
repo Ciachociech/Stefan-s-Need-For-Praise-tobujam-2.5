@@ -60,6 +60,8 @@ class Instance:
                         case 4:
                             pygame.quit()
                             return
+                        case 0:
+                            # TODO: add gameover screen
                         case _:
                             pass
                     actual_scene.render()

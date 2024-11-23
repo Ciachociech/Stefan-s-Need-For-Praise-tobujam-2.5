@@ -44,6 +44,8 @@ class Game(common.Scene):
 
     def update(self):
         self.stefan.update()
+        if self.stefan.statistics.check_lose_condition():
+            return 0
 
         self.input_cooldown -= 1
         if self.is_option_chosen:
