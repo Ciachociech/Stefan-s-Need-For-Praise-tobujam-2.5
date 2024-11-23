@@ -24,12 +24,8 @@ class Instance:
         self.previousState = InstanceState.none
         self.scenes = []
         self.scenes.append(game.scenes.Game(self.display))
-        self.scenes.append(game.scenes.Statistics(self.display))
+        self.scenes.append(game.scenes.Statistics(self.display, self.scenes[0].stefan.statistics))
 
-    '''
-    after updating call this like:
-    self.update_instance_states(new_state)
-    '''
     def update_instance_states(self, new_state):
         self.previousState = self.actualState
         self.actualState = new_state
@@ -44,8 +40,11 @@ class Instance:
             self.display.clear()
 
             actual_scene = None
+            previous_scene = None
             if self.actualState != InstanceState.none:
                 actual_scene = self.scenes[self.actualState - 1]
+            if self.previousState != InstanceState.none:
+                previous_scene = self.scenes[self.previousState - 1]
 
             match self.actualState:
                 case InstanceState.none:
@@ -69,6 +68,7 @@ class Instance:
                                                pygame.mouse.get_pressed(), pygame.mouse.get_pos())
                     if actual_scene.update():
                         self.update_instance_states(InstanceState.game)
+                    previous_scene.render()
                     actual_scene.render()
                 case _:
                     pass

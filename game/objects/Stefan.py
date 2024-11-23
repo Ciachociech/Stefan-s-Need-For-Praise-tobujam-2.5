@@ -10,7 +10,7 @@ class Stefan(common.Object):
         self.position = (100, 100)
 
     def update(self):
-        pass
+        self.statistics.update()
 
     def render(self, window, position=(0,0)):
         super().render(window, self.position + position)

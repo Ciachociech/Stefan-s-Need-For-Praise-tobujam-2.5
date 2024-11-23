@@ -43,6 +43,8 @@ class Game(common.Scene):
             self.input_cooldown = 15
 
     def update(self):
+        self.stefan.update()
+
         self.input_cooldown -= 1
         if self.is_option_chosen:
             self.is_option_chosen = False

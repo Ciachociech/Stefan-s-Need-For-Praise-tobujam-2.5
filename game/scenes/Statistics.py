@@ -3,12 +3,38 @@ import pygame
 import common.Scene
 
 
+def get_color_by_value(value):
+    if value <= 20:
+        return pygame.Color(255, 0, 0, 255)
+    elif value <= 40:
+        return pygame.Color(255, 127, 0, 255)
+    elif value <= 60:
+        return pygame.Color(255, 255, 0, 255)
+    elif value <= 80:
+        return pygame.Color(127, 255, 0, 255)
+    elif value <= 100:
+        return pygame.Color(0, 255, 0, 255)
+    elif value <= 150:
+        return pygame.Color(0, 127, 127, 255)
+    else:
+        return pygame.Color(0, 0, 255, 255)
+
+def get_fill_bar_length_by_value(value):
+    if value <= 50:
+        return 0.8 * value
+    elif value <= 100:
+        return 40 + 2.4 * (value - 50)
+    else:
+        return 160
+
+
 class Statistics(common.Scene):
 
-    def __init__(self, window):
+    def __init__(self, window, statistics):
         super().__init__("StatisticsScene", window)
         self.is_closing_window = False
         self.animation_frames = 0
+        self.statistics = statistics
 
     def process_input(self, keyboard_input, joystick, mouse_input, mouse_position):
         if keyboard_input[pygame.K_ESCAPE] or keyboard_input[pygame.K_x]:
@@ -28,17 +54,39 @@ class Statistics(common.Scene):
 
     def render(self, color=pygame.Color(255, 255, 255, 255)):
         frame_shift = 4 * self.animation_frames / 2 - 200
-        frame_surface = pygame.draw.rect(self.window.window, pygame.Color(0, 0, 0, 255), (60, frame_shift, 600, 200))
+
+        # frame background
+        frame_surface = pygame.draw.rect(self.window.window, pygame.Color(0, 0, 0, 191), (60, frame_shift, 600, 200))
         frame_surface = pygame.draw.rect(self.window.window, pygame.Color(255, 255, 255, 255),
                                          (60, frame_shift, 600, 200), width=8)
+
+        # needs bars (fill)
+        frame_surface = pygame.draw.rect(self.window.window, get_color_by_value(self.statistics.attention),
+                                         (180, frame_shift + 35, get_fill_bar_length_by_value(self.statistics.attention), 40),
+                                         border_top_right_radius=12, border_bottom_right_radius=12)
+        frame_surface = pygame.draw.rect(self.window.window, get_color_by_value(self.statistics.power),
+                                         (180, frame_shift + 119, get_fill_bar_length_by_value(self.statistics.power), 40),
+                                         border_top_right_radius=12, border_bottom_right_radius=12)
+        frame_surface = pygame.draw.rect(self.window.window, get_color_by_value(self.statistics.destruction),
+                                         (472, frame_shift + 35, get_fill_bar_length_by_value(self.statistics.destruction), 40),
+                                         border_top_right_radius=12, border_bottom_right_radius=12)
+        frame_surface = pygame.draw.rect(self.window.window, get_color_by_value(self.statistics.satisfaction),
+                                         (472, frame_shift + 119, get_fill_bar_length_by_value(self.statistics.satisfaction), 40),
+                                         border_top_right_radius=12, border_bottom_right_radius=12)
+
+        # needs bars (frames)
         frame_surface = pygame.draw.rect(self.window.window, pygame.Color(255, 255, 255, 255),
-                                         (180, frame_shift + 35, 160, 40), width=4, border_radius=12)
+                                         (180, frame_shift + 35, 160, 40), width=4, border_top_right_radius=12,
+                                         border_bottom_right_radius=12)
         frame_surface = pygame.draw.rect(self.window.window, pygame.Color(255, 255, 255, 255),
-                                         (180, frame_shift + 119, 160, 40), width=4, border_radius=12)
+                                         (180, frame_shift + 119, 160, 40), width=4, border_top_right_radius=12,
+                                         border_bottom_right_radius=12)
         frame_surface = pygame.draw.rect(self.window.window, pygame.Color(255, 255, 255, 255),
-                                         (472, frame_shift + 35, 160, 40), width=4, border_radius=12)
+                                         (472, frame_shift + 35, 160, 40), width=4, border_top_right_radius=12,
+                                         border_bottom_right_radius=12)
         frame_surface = pygame.draw.rect(self.window.window, pygame.Color(255, 255, 255, 255),
-                                         (472, frame_shift + 119, 160, 40), width=4, border_radius=12)
+                                         (472, frame_shift + 119, 160, 40), width=4, border_top_right_radius=12,
+                                         border_bottom_right_radius=12)
 
         # TODO: replace with icons
         frame_surface = pygame.draw.rect(self.window.window, pygame.Color(255, 255, 255, 255),
