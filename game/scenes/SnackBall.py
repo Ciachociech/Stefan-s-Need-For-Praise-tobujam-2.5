@@ -4,6 +4,7 @@ import random
 import pygame
 
 import common.Scene
+import drawable.Font
 
 
 class SnackBall(common.Scene):
@@ -17,6 +18,9 @@ class SnackBall(common.Scene):
         self.is_set_velocity = False
         self.cooldown = 0
         self.score = 0
+        #
+        self.font = drawable.Font("OptionsFont20")
+        self.font.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 20)
 
     def process_input(self, keyboard_input, joystick, mouse_input, mouse_position):
         if self.cooldown >= 0:
@@ -85,3 +89,20 @@ class SnackBall(common.Scene):
             pygame.draw.line(self.window.window, pygame.Color(255, 255, 255, 255), self.ball_position,
                                (self.ball_position[0] + self.velocity * math.cos(self.angle), self.ball_position[1] + self.velocity * math.sin(self.angle)), 4)
 
+        if self.is_set_angle and self.is_set_velocity and self.velocity <= 0:
+            pygame.draw.rect(self.window.window, pygame.Color(0, 0, 0, 191), (270, 180, 180, 180))
+            pygame.draw.rect(self.window.window, pygame.Color(255, 255, 255, 255), (270, 180, 180, 180), width=4)
+
+            self.font.render_text(self.window.window, "score: " + str(self.score), color, (360, 200), "midtop")
+            if self.score > 0:
+                # TODO: replace with icons
+                pygame.draw.rect(self.window.window, pygame.Color(255, 255, 255, 255),
+                                 (320, 250, 32, 32))
+                pygame.draw.rect(self.window.window, pygame.Color(255, 255, 255, 255),
+                                 (320, 300, 32, 32))
+
+                self.font.render_text(self.window.window, "+" + "+" * int(0.35 * self.score), color, (360, 266), "midleft")
+                self.font.render_text(self.window.window, "+" + "+" * int(0.5 * self.score), color,(360, 316), "midleft")
+            else:
+                self.font.render_text(self.window.window, "Better luck", color, (360, 276), "center")
+                self.font.render_text(self.window.window, "next time!", color, (360, 306), "center")

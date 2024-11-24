@@ -19,7 +19,7 @@ class Upgrades(common.Scene):
         # text related things
         self.font_bigger = drawable.Font("OptionsFont36")
         self.font_bigger.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 36)
-        self.font_smaller = drawable.Font("OptionsFont28")
+        self.font_smaller = drawable.Font("OptionsFont20")
         self.font_smaller.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 20)
         self.upgrades_title = "upgrades shop"
         self.currency_title = "poops(Þ): 0"
