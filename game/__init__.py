@@ -1,2 +1,2 @@
-from .Instance import Instance
 from .GameStatistics import GameStatistics
+from .Instance import Instance

@@ -2,6 +2,7 @@ from enum import IntEnum
 
 import pygame
 
+from game.JSONStatistics import save_statistics_to_json
 import game.scenes.Game
 import game.scenes.Gameover
 import game.scenes.Statistics
@@ -39,11 +40,15 @@ class Instance:
         self.previousState = self.actualState
         self.actualState = new_state
 
+    def save_and_exit(self):
+            save_statistics_to_json(self.statistics)
+            pygame.quit()
+
     def loop(self):
         while pygame.get_init():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    pygame.quit()
+                    self.save_and_exit()
                     return
 
             self.display.clear()
@@ -72,7 +77,7 @@ class Instance:
                         case 3:
                             self.update_instance_states(InstanceState.upgrades)
                         case 4:
-                            pygame.quit()
+                            self.save_and_exit()
                             return
                         case 0:
                             self.update_instance_states(InstanceState.gameover)
@@ -108,3 +113,4 @@ class Instance:
             self.display.display_and_wait()
 
         pygame.quit()
+

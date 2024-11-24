@@ -1,5 +1,4 @@
 import common.Object
-import game.GameStatistics
 
 
 class Stefan(common.Object):

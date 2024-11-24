@@ -1,8 +1,14 @@
+import time
+
+from game.JSONStatistics import save_statistics_to_json
+
+
 class GameStatistics:
 
     def __init__(self):
         # overall
         self.frames = None
+        self.timestamp = time.time()
         # needs
         self.attention = None
         self.power = None
@@ -20,6 +26,7 @@ class GameStatistics:
     def set(self):
         # overall
         self.frames = 0
+        self.timestamp = time.time()
         # needs
         self.attention = 50
         self.power = 50
@@ -50,6 +57,9 @@ class GameStatistics:
             self.update_needs()
         if self.frames % 6 == 0:
             self.poops += 2 * self.cleaning_upgrade if self.cleaning_upgrade != 0 else 1
+        # make a save backup each 18000 frames (should be every 5 minutes)
+        if self.frames % 18000 == 0:
+            save_statistics_to_json(self, extension=".dat.bkp")
 
     def check_lose_condition(self):
         if self.attention <= 0 or self.power <= 0 or self.destruction <= 0 or self.satisfaction <= 0:
