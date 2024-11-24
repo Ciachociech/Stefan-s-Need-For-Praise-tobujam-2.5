@@ -53,10 +53,10 @@ class GameStatistics:
 
     def update(self, frames=1):
         self.frames += frames
-        if frames // (120 * (2 ** self.needs_upgrade)) > 0:
+        if frames // (3000 * (2 ** self.needs_upgrade)) > 0:
             self.update_needs((-frames // 600, -frames // 600, -frames // 600, -frames // 600))
-        # player should learn how to play during first 10 minutes
-        elif self.frames % (120 * (2 ** self.needs_upgrade)) == 0:
+        # player should learn how to play during first 10 minutes (or maybe a bit more)
+        elif self.frames % (3000 * (2 ** self.needs_upgrade)) == 0:
             self.update_needs()
         if self.frames % 600 == 0:
             self.poops += 2 * self.cleaning_upgrade if self.cleaning_upgrade != 0 else 1

@@ -100,7 +100,7 @@ class Instance:
                         case _:
                             pass
                     actual_scene.render()
-                case InstanceState.stats | InstanceState.upgrades | InstanceState.snackball:
+                case InstanceState.stats | InstanceState.upgrades:
                     actual_scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick,
                                                pygame.mouse.get_pressed(), pygame.mouse.get_pos())
                     if actual_scene.update():
@@ -119,6 +119,15 @@ class Instance:
                             return
                         case _:
                             pass
+                    previous_scene.render()
+                    actual_scene.render()
+                case InstanceState.snackball:
+                    actual_scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick,
+                                               pygame.mouse.get_pressed(), pygame.mouse.get_pos())
+                    update_result = actual_scene.update()
+                    if update_result is not None:
+                        self.statistics.update_needs(tuple(i * (self.statistics.cleaning_upgrade + 1) for i in update_result))
+                        self.update_instance_states(InstanceState.game)
                     previous_scene.render()
                     actual_scene.render()
                 case _:

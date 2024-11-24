@@ -51,15 +51,17 @@ class SnackBall(common.Scene):
         self.cooldown -= 1
 
         if self.is_set_angle and self.is_set_velocity:
-            self.ball_position = (self.ball_position[0] + 0.02 * self.velocity * math.cos(self.angle), self.ball_position[1] + 0.02 * self.velocity * math.sin(self.angle))
-            self.velocity -= 1
+            self.ball_position = (self.ball_position[0] + 0.1 * self.velocity * math.cos(self.angle), self.ball_position[1] + 0.1 * self.velocity * math.sin(self.angle))
+            self.velocity -= (1 if self.cooldown <= 0 else 0)
             self.check_collision()
             if self.velocity <= 0:
                 if self.cooldown <= 0:
                     self.cooldown = 90
                 elif self.cooldown == 1:
+                    return_value = (0, 0, 4 * self.score, 6 * self.score)
                     self.__init__(self.window)
-                    return True
+                    return return_value
+            return None
 
         if not self.is_set_angle:
             self.angle += math.pi / 180
@@ -67,7 +69,7 @@ class SnackBall(common.Scene):
             self.velocity += 1
         else:
             self.velocity = 0
-        return False
+        return None
 
     def render(self, color = pygame.Color(255, 255, 255, 255)):
         # frame background

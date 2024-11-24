@@ -32,7 +32,7 @@ class Game(common.Scene):
 
     def set(self, statistics):
         self.statistics = statistics
-        self.input_cooldown = 0
+        self.input_cooldown = 15
         self.main_options_counter = 0
         self.action_options_counter = -1
         self.is_option_chosen = False
@@ -92,19 +92,18 @@ class Game(common.Scene):
                     pass
                 # simple actions (first three) from actions menu is chosen
                 case 0:
-                    self.statistics.update_needs(tuple(i * self.statistics.feeding_upgrade for i in (10, 10, 0, 30)))
+                    self.statistics.update_needs(tuple(i * (self.statistics.feeding_upgrade + 1) for i in (10, 10, 0, 30)))
                 case 1:
-                    self.statistics.update_needs(tuple(i * self.statistics.petting_upgrade for i in (20, 20, 0, 10)))
+                    self.statistics.update_needs(tuple(i * (self.statistics.petting_upgrade + 1) for i in (20, 20, 0, 10)))
                 case 2:
-                    self.statistics.update_needs(tuple(i * self.statistics.cleaning_upgrade for i in (10, 10, -10, 0)))
+                    self.statistics.update_needs(tuple(i * (self.statistics.cleaning_upgrade + 1) for i in (10, 10, -10, 0)))
                     self.statistics.change_poops_to_currency()
                     self.poops_locations = []
-                # any other option (mini-games) from actions menu is chosen
-                case _:
-                    return -self.action_options_counter - 1
             # go back to main menu anyway
+            return_value = -self.action_options_counter - 1
             self.main_options_counter = 0
             self.action_options_counter = -1
+            return return_value
 
 
     def render(self, color = pygame.Color(255, 255, 255, 255)):
