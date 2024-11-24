@@ -1,7 +1,8 @@
 import pygame
 
 import common.Scene
-import drawable
+import drawable.Font
+import game.objects.Indicator
 
 
 class Upgrades(common.Scene):
@@ -11,6 +12,10 @@ class Upgrades(common.Scene):
         self.is_closing_window = False
         self.animation_frames = 0
         self.statistics = statistics
+        self.input_cooldown = 0
+        self.options_counter = 0
+        self.is_option_chosen = False
+        self.indicator = game.objects.Indicator("OptionsIndicator")
         # text related things
         self.font_bigger = drawable.Font("OptionsFont36")
         self.font_bigger.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 36)
@@ -25,10 +30,25 @@ class Upgrades(common.Scene):
 
 
     def process_input(self, keyboard_input, joystick, mouse_input, mouse_position):
+        if self.input_cooldown >= 0 or self.animation_frames < 120:
+            return
+
         if keyboard_input[pygame.K_ESCAPE] or keyboard_input[pygame.K_x]:
             self.is_closing_window = True
+        elif keyboard_input[pygame.K_UP] or keyboard_input[pygame.K_w]:
+            if self.options_counter > 0:
+                self.options_counter -= 1
+                self.input_cooldown = 30
+        elif keyboard_input[pygame.K_DOWN] or keyboard_input[pygame.K_s]:
+            if self.options_counter < 3:
+                self.options_counter += 1
+                self.input_cooldown = 30
+        elif keyboard_input[pygame.K_RIGHT] or keyboard_input[pygame.K_d]:
+            self.is_option_chosen = True
+            self.input_cooldown = 15
 
     def update(self):
+        self.input_cooldown -= 1
         self.currency_title = "poops: " + str(self.statistics.currency)
 
         if self.is_closing_window:
@@ -90,3 +110,6 @@ class Upgrades(common.Scene):
                                       "topleft")
         self.font_bigger.render_text(self.window.window, self.cleaning_description[3], color, (640, frame_shift + 460),
                                      "topright")
+
+        self.indicator.position = (96, frame_shift + 124 + 120 * self.options_counter)
+        self.indicator.render(self.window.window)
