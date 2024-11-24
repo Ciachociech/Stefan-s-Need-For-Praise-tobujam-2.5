@@ -22,11 +22,15 @@ class Upgrades(common.Scene):
         self.font_smaller = drawable.Font("OptionsFont28")
         self.font_smaller.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 20)
         self.upgrades_title = "upgrades shop"
-        self.currency_title = "poops: 0"
-        self.needs_description = ["Time dilation", "With increase of Stefan's power, the time is slowing down", "Decrease 2x a tempo of decaying needs", "cost: 10"]
-        self.feeding_description = ["Better hay quality", "Instead of eliminate world hunger, better hay is discovered", "Feeding is 2x more effective", "cost: 10"]
-        self.petting_description = ["Petting army", "Hired more followers to praising Stefan", "Petting is 2x more effective", "cost: 10"]
-        self.cleaning_description = ["Poop stock market", "Stefan's poops are getting more and more valuable", "Cleaning is 2x more effective and each poop gives 2 currency", "cost: 20"]
+        self.currency_title = "poops(Þ): 0"
+        self.needs_description = ["Time dilation", "With increase of Stefan's power, the time is slowing down",
+                                  "Decrease 2x a tempo of decaying needs", "10Þ"]
+        self.feeding_description = ["Better hay quality", "Instead of eliminate world hunger, better hay is discovered",
+                                    "Feeding will be 2x more effective", "10Þ"]
+        self.petting_description = ["Petting army", "Hired more followers to praising Stefan",
+                                    "Petting will be 2x more effective", "10Þ"]
+        self.cleaning_description = ["Poop stock market", "Stefan's poops are getting more and more valuable",
+                                     "Cleaning will be 2x more effective, each poop will give 2Þ", "20Þ"]
 
 
     def process_input(self, keyboard_input, joystick, mouse_input, mouse_position):
@@ -49,7 +53,7 @@ class Upgrades(common.Scene):
 
     def update(self):
         self.input_cooldown -= 1
-        self.currency_title = "poops: " + str(self.statistics.currency)
+        self.currency_title = "poops(Þ): " + str(self.statistics.currency)
 
         if self.is_closing_window:
             if self.animation_frames == 0:
@@ -57,9 +61,49 @@ class Upgrades(common.Scene):
                 return True
             else:
                 self.animation_frames -= 2
-        else:
-            if self.animation_frames < 120:
+        elif self.animation_frames < 120:
                 self.animation_frames += 1
+        elif self.is_option_chosen:
+            match self.options_counter:
+                case 0:
+                    cost = 10 * (2 ** (self.statistics.needs_upgrade + 1))
+                    if self.statistics.currency >= cost:
+                        self.statistics.currency -= cost
+                        self.statistics.needs_upgrade += 1
+                        self.needs_description[0] = "Time dilation+" + str(self.statistics.needs_upgrade)
+                        self.needs_description[2] = ("Decrease " + str(2 ** (self.statistics.needs_upgrade + 1)) +
+                                                        "x a tempo of decaying needs")
+                        self.needs_description[3] = str(10 * (2 ** (self.statistics.needs_upgrade + 1))) + "Þ"
+                case 1:
+                    cost = 10 * ((self.statistics.feeding_upgrade + 1) ** 2)
+                    if self.statistics.currency >= cost:
+                        self.statistics.currency -= cost
+                        self.statistics.feeding_upgrade += 1
+                        self.feeding_description[0] = "Better hay quality+" + str(self.statistics.feeding_upgrade)
+                        self.feeding_description[2] = ("Feeding will be " + str(self.statistics.feeding_upgrade + 2) +
+                                                        "x more effective")
+                        self.feeding_description[3] = str(10 * ((self.statistics.feeding_upgrade + 1) ** 2)) + "Þ"
+                case 2:
+                    cost = 10 * ((self.statistics.petting_upgrade + 1) ** 2)
+                    if self.statistics.currency >= cost:
+                        self.statistics.currency -= cost
+                        self.statistics.petting_upgrade += 1
+                        self.petting_description[0] = "Petting army+" + str(self.statistics.petting_upgrade)
+                        self.petting_description[2] = ("Petting will be " + str(self.statistics.petting_upgrade + 2) +
+                                                        "x more effective")
+                        self.petting_description[3] = str(10 * ((self.statistics.petting_upgrade + 1) ** 2)) + "Þ"
+                case 3:
+                    cost = 10 * (2 ** (self.statistics.cleaning_upgrade + 1))
+                    if self.statistics.currency >= cost:
+                        self.statistics.currency -= cost
+                        self.statistics.cleaning_upgrade += 1
+                        self.cleaning_description[0] = "Poop stock market+" + str(self.statistics.cleaning_upgrade)
+                        self.cleaning_description[2] = ("Cleaning will be " + str(self.statistics.cleaning_upgrade + 2) +
+                                                        "x more effective, each poop will give " + str(2 * self.statistics.cleaning_upgrade + 2) + "Þ")
+                        self.cleaning_description[3] = str(10 * (2 ** (self.statistics.cleaning_upgrade + 1))) + "Þ"
+                case _:
+                    pass
+            self.is_option_chosen = False
         return False
 
     def render(self, color = pygame.Color(255, 255, 255, 255)):
