@@ -53,11 +53,12 @@ class GameStatistics:
 
     def update(self, frames=1):
         self.frames += frames
-        if frames // 600 > 0:
+        if frames // (120 * (2 ** self.needs_upgrade)) > 0:
             self.update_needs((-frames // 600, -frames // 600, -frames // 600, -frames // 600))
-        elif self.frames % (600 * (2 ** self.needs_upgrade)) == 0:  # final value can be changed, probably smaller than actual
+        # player should learn how to play during first 10 minutes
+        elif self.frames % (120 * (2 ** self.needs_upgrade)) == 0:
             self.update_needs()
-        if self.frames % 6 == 0:
+        if self.frames % 600 == 0:
             self.poops += 2 * self.cleaning_upgrade if self.cleaning_upgrade != 0 else 1
         # make a save backup each 18000 frames (should be every 5 minutes)
         if self.frames % 18000 == 0:
