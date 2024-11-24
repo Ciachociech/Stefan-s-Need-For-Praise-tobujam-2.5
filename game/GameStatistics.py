@@ -49,10 +49,7 @@ class GameStatistics:
         if self.frames % (600 * (2 ** self.needs_upgrade)) == 0:  # final value can be changed, probably smaller than actual
             self.update_needs()
         if self.frames % 6 == 0:
-            if self.cleaning_upgrade != 0:
-                self.poops += 2 * self.cleaning_upgrade
-            else:
-                self.poops += 1
+            self.poops += 2 * self.cleaning_upgrade if self.cleaning_upgrade != 0 else 1
 
     def check_lose_condition(self):
         if self.attention <= 0 or self.power <= 0 or self.destruction <= 0 or self.satisfaction <= 0:

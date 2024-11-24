@@ -41,14 +41,10 @@ class Game(common.Scene):
     def add_new_poop_location(self):
         location_x = random.randint(0, 256)
         location_y = random.randint(0, 256)
-        if location_x >= 128:
-            location_x += 448
-        else:
-            location_x += 16
-        if location_y >= 128:
-            location_y += 448
-        else:
-            location_y += 16
+
+        location_x += 448 if location_x >= 128 else 16
+        location_y += 448 if location_y >= 128 else 16
+
         self.poops_locations.append((location_x, location_y))
 
     def process_input(self, keyboard_input, joystick, mouse_input, mouse_position):
