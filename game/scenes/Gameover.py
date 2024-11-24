@@ -23,7 +23,7 @@ class Gameover(common.Scene):
         self.indicator = game.objects.Indicator("OptionsIndicator")
         # strings
         self.gameover_title = "game over"
-        self.gameover_too_bad = ["Stefan has been neglected, so decided too run",
+        self.gameover_too_bad = ["Stefan has been neglected, so decided to run",
                                  "away and choose its new prophet which will pay",
                                  "more attention and lead to new era of rabbit",
                                  "supremacy. Of course, tides of time can allow you",
