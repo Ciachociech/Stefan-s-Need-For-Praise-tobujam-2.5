@@ -51,8 +51,8 @@ class GameStatistics:
         self.currency += self.poops
         self.poops = 0
 
-    def update(self):
-        self.frames += 1
+    def update(self, frames=1):
+        self.frames += frames
         if self.frames % (600 * (2 ** self.needs_upgrade)) == 0:  # final value can be changed, probably smaller than actual
             self.update_needs()
         if self.frames % 6 == 0:

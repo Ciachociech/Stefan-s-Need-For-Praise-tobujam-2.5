@@ -2,7 +2,7 @@ from enum import IntEnum
 
 import pygame
 
-from game.JSONStatistics import save_statistics_to_json
+from game.JSONStatistics import save_statistics_to_json, load_statistics_from_json
 import game.scenes.Game
 import game.scenes.Gameover
 import game.scenes.Statistics
@@ -18,14 +18,14 @@ class InstanceState(IntEnum):
 
 
 class Instance:
+
     def __init__(self):
         pygame.init()
         self.display = system.Display(720, 720, "bulonais-5")
         self.display.set_icon("assets/sprites/WIP32x32.png")
         self.display.frames = 60
 
-        self.statistics = game.GameStatistics()
-        self.statistics.set()   # temporary
+        self.statistics = self.load()
 
         self.actualState = InstanceState.none
         self.previousState = InstanceState.none
@@ -36,13 +36,21 @@ class Instance:
         self.scenes.append(game.scenes.Upgrades(self.display, self.statistics))
         self.scenes.append(game.scenes.Gameover(self.display))
 
-    def update_instance_states(self, new_state):
-        self.previousState = self.actualState
-        self.actualState = new_state
+    def load(self):
+        result = load_statistics_from_json()
+        if result is None:
+            result = load_statistics_from_json(extension=".dat.bkp")
+            if result is None:
+                return game.GameStatistics()
+        return result
 
     def save_and_exit(self):
             save_statistics_to_json(self.statistics)
             pygame.quit()
+
+    def update_instance_states(self, new_state):
+        self.previousState = self.actualState
+        self.actualState = new_state
 
     def loop(self):
         while pygame.get_init():
