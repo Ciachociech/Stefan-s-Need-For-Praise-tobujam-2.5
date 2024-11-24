@@ -1,5 +1,6 @@
 import json
 import time
+from json import JSONDecodeError
 
 import game
 
@@ -14,12 +15,13 @@ def load_statistics_from_json(name="stefan", extension=".dat"):
     file = None
     try:
         file = open(name + extension, "r")
-    except ValueError:
+    except JSONDecodeError:
         return None
     json_content = ""
     for line in file.readlines():
         json_content += line
-    print(json_content)
+    if len(json_content) == 0:
+        return None
     json_dict = json.loads(json_content)
 
     statistics = game.GameStatistics()

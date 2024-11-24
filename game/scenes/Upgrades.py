@@ -23,15 +23,32 @@ class Upgrades(common.Scene):
         self.font_smaller.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 20)
         self.upgrades_title = "upgrades shop"
         self.currency_title = "poops(Þ): 0"
-        self.needs_description = ["Time dilation", "With increase of Stefan's power, the time is slowing down",
-                                  "Decrease 2x a tempo of decaying needs", "10Þ"]
-        self.feeding_description = ["Better hay quality", "Instead of eliminate world hunger, better hay is discovered",
-                                    "Feeding will be 2x more effective", "10Þ"]
-        self.petting_description = ["Petting army", "Hired more followers to praising Stefan",
-                                    "Petting will be 2x more effective", "10Þ"]
-        self.cleaning_description = ["Poop stock market", "Stefan's poops are getting more and more valuable",
-                                     "Cleaning will be 2x more effective, each poop will give 2Þ", "20Þ"]
+        # descriptions
+        self.needs_description = []
+        self.feeding_description = []
+        self.petting_description = []
+        self.cleaning_description = []
+        self.refresh_texts()
 
+    def refresh_texts(self):
+        self.needs_description = ["Time dilation" + ("" if self.statistics.needs_upgrade == 0 else "+" + str(self.statistics.needs_upgrade)),
+                                  "With increase of Stefan's power, the time is slowing down",
+                                  ("Decrease " + str(2 ** (self.statistics.needs_upgrade + 1)) + "x a tempo of decaying needs"),
+                                  str(10 * (2 ** (self.statistics.needs_upgrade + 1))) + "Þ"]
+        self.feeding_description = ["Better hay quality" + ("" if self.statistics.feeding_upgrade == 0 else "+" + str(self.statistics.feeding_upgrade)),
+                                    "Instead of eliminate world hunger, better hay is discovered",
+                                    "Feeding will be " + str(self.statistics.feeding_upgrade + 2) + "x more effective",
+                                    str(10 * ((self.statistics.feeding_upgrade + 1) ** 2)) + "Þ"]
+        self.petting_description = ["Petting army" + ("" if self.statistics.petting_upgrade == 0 else "+" + str(self.statistics.petting_upgrade)),
+                                    "Hired more followers to praising Stefan",
+                                    "Petting will be " + str(self.statistics.petting_upgrade + 2) + "x more effective",
+                                    str(10 * ((self.statistics.petting_upgrade + 1) ** 2)) + "Þ"]
+        self.cleaning_description = ["Poop stock market" + ("" if self.statistics.cleaning_upgrade == 0 else "+" + str(self.statistics.cleaning_upgrade)),
+                                     "Stefan's poops are getting more and more valuable",
+                                     ("Cleaning will be " + str(self.statistics.cleaning_upgrade + 2) +
+                                      "x more effective, each poop will give " + ("2" if self.statistics.cleaning_upgrade == 0
+                                      else str(2 * self.statistics.cleaning_upgrade + 2)) + "Þ"),
+                                     str(10 * (2 ** (self.statistics.cleaning_upgrade + 1))) + "Þ"]
 
     def process_input(self, keyboard_input, joystick, mouse_input, mouse_position):
         if self.input_cooldown >= 0 or self.animation_frames < 120:

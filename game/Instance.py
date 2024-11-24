@@ -84,6 +84,7 @@ class Instance:
                             self.update_instance_states(InstanceState.stats)
                         case 3:
                             self.update_instance_states(InstanceState.upgrades)
+                            self.scenes[self.actualState - 1].refresh_texts()
                         case 4:
                             self.save_and_exit()
                             return
