@@ -53,7 +53,9 @@ class GameStatistics:
 
     def update(self, frames=1):
         self.frames += frames
-        if self.frames % (600 * (2 ** self.needs_upgrade)) == 0:  # final value can be changed, probably smaller than actual
+        if frames // 600 > 0:
+            self.update_needs((-frames // 600, -frames // 600, -frames // 600, -frames // 600))
+        elif self.frames % (600 * (2 ** self.needs_upgrade)) == 0:  # final value can be changed, probably smaller than actual
             self.update_needs()
         if self.frames % 6 == 0:
             self.poops += 2 * self.cleaning_upgrade if self.cleaning_upgrade != 0 else 1
