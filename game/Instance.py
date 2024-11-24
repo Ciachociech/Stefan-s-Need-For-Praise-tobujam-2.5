@@ -15,6 +15,16 @@ class InstanceState(IntEnum):
     stats = 2
     upgrades = 3
     gameover = 4
+    snackball = 5
+
+
+def load():
+    result = load_statistics_from_json()
+    if result is None:
+        result = load_statistics_from_json(extension=".dat.bkp")
+        if result is None:
+            return game.GameStatistics()
+    return result
 
 
 class Instance:
@@ -25,7 +35,7 @@ class Instance:
         self.display.set_icon("assets/sprites/WIP32x32.png")
         self.display.frames = 60
 
-        self.statistics = self.load()
+        self.statistics = load()
 
         self.actualState = InstanceState.none
         self.previousState = InstanceState.none
@@ -35,14 +45,7 @@ class Instance:
         self.scenes.append(game.scenes.Statistics(self.display, self.statistics))
         self.scenes.append(game.scenes.Upgrades(self.display, self.statistics))
         self.scenes.append(game.scenes.Gameover(self.display))
-
-    def load(self):
-        result = load_statistics_from_json()
-        if result is None:
-            result = load_statistics_from_json(extension=".dat.bkp")
-            if result is None:
-                return game.GameStatistics()
-        return result
+        self.scenes.append(game.scenes.SnackBall(self.display))
 
     def save_and_exit(self):
             save_statistics_to_json(self.statistics)
@@ -88,6 +91,8 @@ class Instance:
                         case 4:
                             self.save_and_exit()
                             return
+                        case -4:
+                            self.update_instance_states(InstanceState.snackball)
                         case 0:
                             self.update_instance_states(InstanceState.gameover)
                             self.scenes[self.actualState - 1].set(self.statistics)
@@ -95,7 +100,7 @@ class Instance:
                         case _:
                             pass
                     actual_scene.render()
-                case InstanceState.stats | InstanceState.upgrades:
+                case InstanceState.stats | InstanceState.upgrades | InstanceState.snackball:
                     actual_scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick,
                                                pygame.mouse.get_pressed(), pygame.mouse.get_pos())
                     if actual_scene.update():
