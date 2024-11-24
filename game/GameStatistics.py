@@ -22,6 +22,7 @@ class GameStatistics:
         self.feeding_upgrade = None
         self.petting_upgrade = None
         self.cleaning_upgrade = None
+        self.snack_ball_upgrade = None
 
     def set(self):
         # overall
@@ -40,6 +41,7 @@ class GameStatistics:
         self.feeding_upgrade = 0
         self.petting_upgrade = 0
         self.cleaning_upgrade = 0
+        self.snack_ball_upgrade = 0
 
     def update_needs(self, modification=(-1, -1, -1, -1)):
         self.attention += modification[0]

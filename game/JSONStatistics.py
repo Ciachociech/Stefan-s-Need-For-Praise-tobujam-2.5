@@ -15,7 +15,7 @@ def load_statistics_from_json(name="stefan", extension=".dat"):
     file = None
     try:
         file = open(name + extension, "r")
-    except JSONDecodeError:
+    except FileNotFoundError:
         return None
     json_content = ""
     for line in file.readlines():
@@ -35,6 +35,7 @@ def load_statistics_from_json(name="stefan", extension=".dat"):
     statistics.feeding_upgrade = json_dict["feeding_upgrade"]
     statistics.petting_upgrade = json_dict["petting_upgrade"]
     statistics.cleaning_upgrade = json_dict["cleaning_upgrade"]
+    statistics.snack_ball_upgrade = json_dict["snack_ball_upgrade"]
     statistics.poops = 0
 
     # simulate time when game is not running

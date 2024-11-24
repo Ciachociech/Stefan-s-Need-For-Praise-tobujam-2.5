@@ -93,7 +93,7 @@ class SnackBall(common.Scene):
             pygame.draw.rect(self.window.window, pygame.Color(0, 0, 0, 191), (270, 180, 180, 180))
             pygame.draw.rect(self.window.window, pygame.Color(255, 255, 255, 255), (270, 180, 180, 180), width=4)
 
-            self.font.render_text(self.window.window, "score: " + str(self.score), color, (360, 200), "midtop")
+            self.font.render_text(self.window.window, "bounces: " + str(self.score), color, (360, 200), "midtop")
             if self.score > 0:
                 # TODO: replace with icons
                 pygame.draw.rect(self.window.window, pygame.Color(255, 255, 255, 255),

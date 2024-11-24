@@ -23,7 +23,9 @@ def load():
     if result is None:
         result = load_statistics_from_json(extension=".dat.bkp")
         if result is None:
-            return game.GameStatistics()
+            statistics = game.GameStatistics()
+            statistics.set()
+            return statistics
     return result
 
 
