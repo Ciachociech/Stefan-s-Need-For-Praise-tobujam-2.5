@@ -49,7 +49,7 @@ class Statistics(common.Scene):
 
     def update(self):
         if self.is_closing_window:
-            if self.animation_frames == 0:
+            if self.animation_frames <= 0:
                 self.is_closing_window = False
                 return True
             else:

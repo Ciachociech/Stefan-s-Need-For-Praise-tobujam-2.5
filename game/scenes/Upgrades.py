@@ -78,7 +78,7 @@ class Upgrades(common.Scene):
         self.currency_title = "poops(Þ): " + str(self.statistics.currency)
 
         if self.is_closing_window:
-            if self.animation_frames == 0:
+            if self.animation_frames <= 0:
                 self.is_closing_window = False
                 return True
             else:
