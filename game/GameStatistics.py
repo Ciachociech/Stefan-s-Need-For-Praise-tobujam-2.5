@@ -11,6 +11,11 @@ class GameStatistics:
         # poops/currency
         self.poops = None
         self.currency = None
+        # upgrades
+        self.needs_upgrade = None
+        self.feeding_upgrade = None
+        self.petting_upgrade = None
+        self.cleaning_upgrade = None
 
     def set(self):
         # overall
@@ -23,6 +28,11 @@ class GameStatistics:
         # poops/currency
         self.poops = 0
         self.currency = 0
+        # upgrades
+        self.needs_upgrade = 0
+        self.feeding_upgrade = 0
+        self.petting_upgrade = 0
+        self.cleaning_upgrade = 0
 
     def update_needs(self, modification=(-1, -1, -1, -1)):
         self.attention += modification[0]
@@ -36,10 +46,13 @@ class GameStatistics:
 
     def update(self):
         self.frames += 1
-        if self.frames % 600 == 0:  # final value can be changed, probably smaller than actual
+        if self.frames % (600 * (2 ** self.needs_upgrade)) == 0:  # final value can be changed, probably smaller than actual
             self.update_needs()
-        if self.frames % 600 == 0:
-            self.poops += 1
+        if self.frames % 6 == 0:
+            if self.cleaning_upgrade != 0:
+                self.poops += 2 * self.cleaning_upgrade
+            else:
+                self.poops += 1
 
     def check_lose_condition(self):
         if self.attention <= 0 or self.power <= 0 or self.destruction <= 0 or self.satisfaction <= 0:

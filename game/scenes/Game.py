@@ -96,11 +96,11 @@ class Game(common.Scene):
                     pass
                 # simple actions (first three) from actions menu is chosen
                 case 0:
-                    self.statistics.update_needs((10, 10, 0, 30))
+                    self.statistics.update_needs(tuple(i * self.statistics.feeding_upgrade for i in (10, 10, 0, 30)))
                 case 1:
-                    self.statistics.update_needs((20, 20, 0, 10))
+                    self.statistics.update_needs(tuple(i * self.statistics.petting_upgrade for i in (20, 20, 0, 10)))
                 case 2:
-                    self.statistics.update_needs((10, 10, -10, 0))
+                    self.statistics.update_needs(tuple(i * self.statistics.cleaning_upgrade for i in (10, 10, -10, 0)))
                     self.statistics.change_poops_to_currency()
                     self.poops_locations = []
                 # any other option (mini-games) from actions menu is chosen
