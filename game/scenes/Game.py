@@ -31,7 +31,7 @@ class Game(common.Scene):
         self.font = drawable.Font("OptionsFont")
         self.font.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 48)
         self.main_options_texts = ["actions", "statistics", "upgrades", "save & exit"]
-        self.action_options_texts = ["feed", "pet", "clean", "snack ball", "hide & seek", "toy", "bowling", "back"]
+        self.action_options_texts = ["feed", "pet", "clean", "snack ball", "back"]
 
 
     def set(self, statistics):
@@ -69,9 +69,16 @@ class Game(common.Scene):
                 self.action_options_counter = (self.action_options_counter + 1) % len(self.action_options_texts)
             self.input_cooldown = 30
             self.options_se.sound.play()
-        elif keyboard_input[pygame.K_UP] or keyboard_input[pygame.K_DOWN] or keyboard_input[pygame.K_w] or keyboard_input[pygame.K_s]:
+        elif keyboard_input[pygame.K_UP] or keyboard_input[pygame.K_DOWN] or keyboard_input[pygame.K_w] or keyboard_input[pygame.K_s] or keyboard_input[pygame.K_SPACE] or keyboard_input[pygame.K_z]:
             self.is_option_chosen = True
             self.input_cooldown = 15
+            self.options_se.sound.play()
+        elif keyboard_input[pygame.K_ESCAPE] or keyboard_input[pygame.K_x]:
+            if self.main_options_counter >= 0:
+                self.main_options_counter = len(self.main_options_texts) - 1
+            elif self.action_options_counter >= 0:
+                self.action_options_counter = len(self.action_options_texts) - 1
+            self.input_cooldown = 30
             self.options_se.sound.play()
 
     def update(self):
@@ -98,7 +105,7 @@ class Game(common.Scene):
 
             match self.action_options_counter:
                 # if back option from actions menu is chosen
-                case 7: # len(self.action_options_texts) - 1 - but Python doesn't allow this
+                case 4: # len(self.action_options_texts) - 1 - but Python doesn't allow this
                     pass
                 # simple actions (first three) from actions menu is chosen
                 case 0:

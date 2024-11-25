@@ -58,4 +58,4 @@ class Intro(common.Scene):
 
         if self.line_advance >= len(self.introduction):
             self.logo.render(self.window.window, (240, 60))
-            self.font.render_text(self.window.window, "press SPACE to start a game", color, (360, 660), "center")
+            self.font.render_text(self.window.window, "press SPACE or Z button to start a game", color, (360, 660), "center")

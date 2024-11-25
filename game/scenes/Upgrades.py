@@ -72,7 +72,7 @@ class Upgrades(common.Scene):
                 self.options_counter += 1
                 self.input_cooldown = 30
                 self.options_se.sound.play()
-        elif keyboard_input[pygame.K_RIGHT] or keyboard_input[pygame.K_d]:
+        elif keyboard_input[pygame.K_RIGHT] or keyboard_input[pygame.K_d] or keyboard_input[pygame.K_SPACE] or keyboard_input[pygame.K_z]:
             self.is_option_chosen = True
             self.input_cooldown = 15
             self.options_se.sound.play()

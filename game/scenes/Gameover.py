@@ -57,7 +57,7 @@ class Gameover(common.Scene):
                 self.options_se.sound.play()
                 self.options_counter = 1
             self.input_cooldown = 30
-        elif keyboard_input[pygame.K_UP] or keyboard_input[pygame.K_DOWN] or keyboard_input[pygame.K_w] or keyboard_input[pygame.K_s]:
+        elif keyboard_input[pygame.K_UP] or keyboard_input[pygame.K_DOWN] or keyboard_input[pygame.K_w] or keyboard_input[pygame.K_s] or keyboard_input[pygame.K_SPACE] or keyboard_input[pygame.K_z]:
             self.is_option_chosen = True
             self.input_cooldown = 15
 
