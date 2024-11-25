@@ -20,7 +20,7 @@ class Game(common.Scene):
         self.is_option_chosen = None
         self.poops_locations = None
         # objects
-        self.stefan = game.objects.Stefan()
+        self.stefan = game.objects.Stefan(window)
         self.indicator_animation = 40
         # text/options related things
         self.font = drawable.Font("OptionsFont")
@@ -74,6 +74,8 @@ class Game(common.Scene):
 
         self.input_cooldown -= 1
         self.indicator_animation = (40 if self.indicator_animation == 0 else self.indicator_animation - 1)
+        if self.statistics.frames % 300 == 299:
+            self.stefan.update()
         if self.is_option_chosen:
             self.is_option_chosen = False
 
@@ -111,7 +113,7 @@ class Game(common.Scene):
             pygame.draw.circle(self.window.window, pygame.Color(155, 103, 60, 255), poop, 16)
             pygame.draw.circle(self.window.window, pygame.Color(102, 70, 40, 255), poop, 16, 2)
 
-        self.stefan.render(self.window.window)
+        self.stefan.render()
         pygame.draw.line(self.window.window, pygame.Color(255, 255, 255, 255), (260, 632), (460, 632), 4)
         pygame.draw.polygon(self.window.window, pygame.Color(255, 255, 255, 255),
                             ((320, 668 + 8 * self.indicator_animation // 10), (400, 668 + 8 * self.indicator_animation // 10), (360, 648 + 8 * self.indicator_animation // 10)))
