@@ -74,7 +74,7 @@ class Game(common.Scene):
 
         self.input_cooldown -= 1
         self.indicator_animation = (40 if self.indicator_animation == 0 else self.indicator_animation - 1)
-        if self.statistics.frames % 300 == 299:
+        if self.statistics.frames % 60 == 59:
             self.stefan.update()
         if self.is_option_chosen:
             self.is_option_chosen = False
