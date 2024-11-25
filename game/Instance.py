@@ -17,6 +17,7 @@ class InstanceState(IntEnum):
     upgrades = 4
     gameover = 5
     snackball = 6
+    simpleaction = 7
 
 
 def load():
@@ -50,6 +51,7 @@ class Instance:
         self.scenes.append(game.scenes.Upgrades(self.display, self.statistics))
         self.scenes.append(game.scenes.Gameover(self.display))
         self.scenes.append(game.scenes.SnackBall(self.display))
+        self.scenes.append(game.scenes.SimpleAction(self.display))
 
     def save_and_exit(self):
             save_statistics_to_json(self.statistics)
@@ -92,7 +94,8 @@ class Instance:
                 case InstanceState.game:
                     actual_scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick,
                                                pygame.mouse.get_pressed(), pygame.mouse.get_pos())
-                    match actual_scene.update():
+                    game_val = actual_scene.update()
+                    match game_val:
                         case 2:
                             self.update_instance_states(InstanceState.stats)
                         case 3:
@@ -101,6 +104,9 @@ class Instance:
                         case 4:
                             self.save_and_exit()
                             return
+                        case -1 | -2 | -3:
+                            self.update_instance_states(InstanceState.simpleaction)
+                            self.scenes[self.actualState - 1].action_number = -game_val
                         case -4:
                             self.update_instance_states(InstanceState.snackball)
                         case 0:
@@ -131,7 +137,7 @@ class Instance:
                             pass
                     previous_scene.render()
                     actual_scene.render()
-                case InstanceState.snackball:
+                case InstanceState.snackball | InstanceState.simpleaction:
                     actual_scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick,
                                                pygame.mouse.get_pressed(), pygame.mouse.get_pos())
                     update_result = actual_scene.update()
