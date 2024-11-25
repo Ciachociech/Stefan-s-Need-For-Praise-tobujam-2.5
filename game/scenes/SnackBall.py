@@ -3,6 +3,7 @@ import random
 
 import pygame
 
+import audio.Sound
 import common.Scene
 import common.Object
 import drawable.Font
@@ -19,6 +20,8 @@ class SnackBall(common.Scene):
         self.is_set_velocity = False
         self.cooldown = 0
         self.score = 0
+        self.bounce_se = audio.Sound("BounceSE", "assets/audio/kick.wav")
+        self.bounce_se.sound.set_volume(0.25)
         # font and graphics
         self.font = drawable.Font("OptionsFont20")
         self.font.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 20)
@@ -38,18 +41,22 @@ class SnackBall(common.Scene):
     def check_collision(self):
         if self.ball_position[0] < 196:
             self.score += 1
+            self.bounce_se.sound.play()
             self.ball_position = (392 - self.ball_position[0], self.ball_position[1])
             self.angle = math.pi - self.angle if self.angle <= math.pi else 3 * math.pi - self.angle
         elif self.ball_position[0] > 524:
             self.score += 1
+            self.bounce_se.sound.play()
             self.ball_position = (1048 - self.ball_position[0], self.ball_position[1])
             self.angle = math.pi - self.angle if self.angle <= math.pi else 3 * math.pi - self.angle
         if self.ball_position[1] < 106:
             self.score += 1
+            self.bounce_se.sound.play()
             self.ball_position = (self.ball_position[0], 212 - self.ball_position[1])
             self.angle = 2 * math.pi - self.angle
         elif self.ball_position[1] > 434:
             self.score += 1
+            self.bounce_se.sound.play()
             self.ball_position = (self.ball_position[0], 868 - self.ball_position[1])
             self.angle = 2 * math.pi - self.angle
 

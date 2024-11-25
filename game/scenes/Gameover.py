@@ -1,5 +1,6 @@
 import pygame
 
+import audio.Sound
 import common.Scene
 import drawable.Font
 
@@ -20,6 +21,9 @@ class Gameover(common.Scene):
         self.font_smaller.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 28)
         self.options_texts = ["start over", "exit"]
         self.indicator_animation = 0
+        self.gameover_outro = audio.Sound("GameoverSE", "assets/audio/outro.wav")
+        self.gameover_outro.sound.set_volume(0.1)
+        self.options_se = audio.Sound("OptionsSE", "assets/audio/click.wav")
         # strings
         self.gameover_title = "game over"
         self.gameover_too_bad = ["Stefan has been neglected, so decided to run",
@@ -45,10 +49,12 @@ class Gameover(common.Scene):
 
         if keyboard_input[pygame.K_LEFT] or keyboard_input[pygame.K_a]:
             if self.options_counter == 1:
+                self.options_se.sound.play()
                 self.options_counter = 0
             self.input_cooldown = 30
         elif keyboard_input[pygame.K_RIGHT] or keyboard_input[pygame.K_d]:
             if self.options_counter == 0:
+                self.options_se.sound.play()
                 self.options_counter = 1
             self.input_cooldown = 30
         elif keyboard_input[pygame.K_UP] or keyboard_input[pygame.K_DOWN] or keyboard_input[pygame.K_w] or keyboard_input[pygame.K_s]:
@@ -56,12 +62,14 @@ class Gameover(common.Scene):
             self.input_cooldown = 15
 
     def update(self):
+        if self.input_cooldown == 120:
+            self.gameover_outro.sound.play()
         self.input_cooldown -= 1
         self.indicator_animation = (0 if self.indicator_animation == 40 else self.indicator_animation + 1)
 
-
         if self.is_option_chosen:
             self.is_option_chosen = True
+            self.gameover_outro.sound.stop()
             return -2 * self.options_counter + 1
 
     def render(self, color = pygame.Color(255, 255, 255, 255)):

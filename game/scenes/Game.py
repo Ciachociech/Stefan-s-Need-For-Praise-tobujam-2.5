@@ -3,6 +3,7 @@ import random
 
 import pygame
 
+import audio.Sound
 import common.Scene
 import drawable.Font
 import game.objects.Stefan
@@ -19,6 +20,10 @@ class Game(common.Scene):
         self.action_options_counter = None
         self.is_option_chosen = None
         self.poops_locations = None
+        self.options_se = audio.Sound("OptionsSE", "assets/audio/click.wav")
+        self.feeding_se = audio.Sound("OptionsSE", "assets/audio/crunch.wav")
+        self.petting_se = audio.Sound("OptionsSE", "assets/audio/sweep.wav")
+        self.cleaning_se = audio.Sound("OptionsSE", "assets/audio/broom.wav")
         # objects
         self.stefan = game.objects.Stefan(window)
         self.indicator_animation = 40
@@ -56,15 +61,18 @@ class Game(common.Scene):
             elif self.action_options_counter >= 0:
                 self.action_options_counter = (self.action_options_counter - 1) % len(self.action_options_texts)
             self.input_cooldown = 30
+            self.options_se.sound.play()
         elif keyboard_input[pygame.K_RIGHT] or keyboard_input[pygame.K_d]:
             if self.main_options_counter >= 0:
                 self.main_options_counter = (self.main_options_counter + 1) % len(self.main_options_texts)
             elif self.action_options_counter >= 0:
                 self.action_options_counter = (self.action_options_counter + 1) % len(self.action_options_texts)
             self.input_cooldown = 30
+            self.options_se.sound.play()
         elif keyboard_input[pygame.K_UP] or keyboard_input[pygame.K_DOWN] or keyboard_input[pygame.K_w] or keyboard_input[pygame.K_s]:
             self.is_option_chosen = True
             self.input_cooldown = 15
+            self.options_se.sound.play()
 
     def update(self):
         if self.statistics.check_lose_condition() != 0:
@@ -95,12 +103,15 @@ class Game(common.Scene):
                 # simple actions (first three) from actions menu is chosen
                 case 0:
                     self.statistics.update_needs(tuple(i * (self.statistics.feeding_upgrade + 1) for i in (10, 10, 0, 30)))
+                    self.feeding_se.sound.play()
                 case 1:
                     self.statistics.update_needs(tuple(i * (self.statistics.petting_upgrade + 1) for i in (20, 20, 0, 10)))
+                    self.petting_se.sound.play()
                 case 2:
                     self.statistics.update_needs(tuple(i * (self.statistics.cleaning_upgrade + 1) for i in (10, 10, -10, 0)))
                     self.statistics.change_poops_to_currency()
                     self.poops_locations = []
+                    self.cleaning_se.sound.play()
             # go back to main menu anyway
             return_value = -self.action_options_counter - 1
             self.main_options_counter = 0

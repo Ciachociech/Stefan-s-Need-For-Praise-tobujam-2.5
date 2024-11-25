@@ -1,5 +1,6 @@
 import pygame
 
+import audio.Sound
 import common.Scene
 import drawable.Font
 
@@ -15,6 +16,7 @@ class Upgrades(common.Scene):
         self.options_counter = 0
         self.is_option_chosen = False
         self.indicator_animation = 0
+        self.options_se = audio.Sound("OptionsSE", "assets/audio/click.wav")
         # text related things
         self.font_bigger = drawable.Font("OptionsFont36")
         self.font_bigger.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 36)
@@ -64,13 +66,16 @@ class Upgrades(common.Scene):
             if self.options_counter > 0:
                 self.options_counter -= 1
                 self.input_cooldown = 30
+                self.options_se.sound.play()
         elif keyboard_input[pygame.K_DOWN] or keyboard_input[pygame.K_s]:
             if self.options_counter < 4:
                 self.options_counter += 1
                 self.input_cooldown = 30
+                self.options_se.sound.play()
         elif keyboard_input[pygame.K_RIGHT] or keyboard_input[pygame.K_d]:
             self.is_option_chosen = True
             self.input_cooldown = 15
+            self.options_se.sound.play()
 
     def update(self):
         self.input_cooldown -= 1
