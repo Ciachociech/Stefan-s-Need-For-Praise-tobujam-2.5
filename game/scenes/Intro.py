@@ -27,8 +27,10 @@ class Intro(common.Scene):
 
         if keyboard_input[pygame.K_z] or keyboard_input[pygame.K_SPACE]:
             self.line_advance += 1
-            self.input_cooldown = 15
+            self.input_cooldown = 30
             self.advance_cooldown = 180
+            if self.line_advance >= len(self.introduction):
+                self.skip_intro = True
         elif keyboard_input[pygame.K_ESCAPE]:
             self.skip_intro = True
 
@@ -39,7 +41,7 @@ class Intro(common.Scene):
         if self.advance_cooldown <= 0:
             self.advance_cooldown = 180
             self.line_advance += 1
-        if self.skip_intro or (self.line_advance >= len(self.introduction)):
+        if self.skip_intro:
             return True
 
     def render(self, color = pygame.Color(255, 255, 255, 255)):
