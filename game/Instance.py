@@ -11,11 +11,12 @@ import system.Display
 
 class InstanceState(IntEnum):
     none = 0
-    game = 1
-    stats = 2
-    upgrades = 3
-    gameover = 4
-    snackball = 5
+    intro = 1
+    game = 2
+    stats = 3
+    upgrades = 4
+    gameover = 5
+    snackball = 6
 
 
 def load():
@@ -43,6 +44,7 @@ class Instance:
         self.previousState = InstanceState.none
 
         self.scenes = []
+        self.scenes.append(game.scenes.Intro(self.display))
         self.scenes.append(game.scenes.Game(self.display))
         self.scenes.append(game.scenes.Statistics(self.display, self.statistics))
         self.scenes.append(game.scenes.Upgrades(self.display, self.statistics))
@@ -74,13 +76,19 @@ class Instance:
                 previous_scene = self.scenes[self.previousState - 1]
 
             # there will be "only one" element updated exclusively beyond actual scene
-            if self.actualState != InstanceState.none and self.actualState != InstanceState.gameover:
+            if self.actualState != InstanceState.none and self.actualState != InstanceState.intro and self.actualState != InstanceState.gameover:
                 self.statistics.update()
 
             match self.actualState:
                 case InstanceState.none:
-                    self.update_instance_states(InstanceState.game)
-                    self.scenes[self.actualState - 1].set(self.statistics)
+                    self.update_instance_states(InstanceState.intro)
+                case InstanceState.intro:
+                    actual_scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick,
+                                               pygame.mouse.get_pressed(), pygame.mouse.get_pos())
+                    if actual_scene.update():
+                        self.update_instance_states(InstanceState.game)
+                        self.scenes[self.actualState - 1].set(self.statistics)
+                    actual_scene.render()
                 case InstanceState.game:
                     actual_scene.process_input(pygame.key.get_pressed(), pygame.joystick.Joystick,
                                                pygame.mouse.get_pressed(), pygame.mouse.get_pos())
