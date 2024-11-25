@@ -2,7 +2,6 @@ import pygame
 
 import common.Scene
 import drawable.Font
-import game.objects.Indicator
 
 
 class Gameover(common.Scene):
@@ -20,7 +19,7 @@ class Gameover(common.Scene):
         self.font_smaller = drawable.Font("OptionsFont28")
         self.font_smaller.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 28)
         self.options_texts = ["start over", "exit"]
-        self.indicator = game.objects.Indicator("OptionsIndicator")
+        self.indicator_animation = 0
         # strings
         self.gameover_title = "game over"
         self.gameover_too_bad = ["Stefan has been neglected, so decided to run",
@@ -58,7 +57,8 @@ class Gameover(common.Scene):
 
     def update(self):
         self.input_cooldown -= 1
-        self.indicator.position = (110 + 345 * self.options_counter, 500)
+        self.indicator_animation = (0 if self.indicator_animation == 40 else self.indicator_animation + 1)
+
 
         if self.is_option_chosen:
             self.is_option_chosen = True
@@ -83,4 +83,8 @@ class Gameover(common.Scene):
         self.font_bigger.render_text(self.window.window, self.options_texts[0], color, (210, 500), "center")
         self.font_bigger.render_text(self.window.window, self.options_texts[1], color, (510, 500), "center")
 
-        self.indicator.render(self.window.window)
+        indicator_position = (80 + 345 * self.options_counter, 470)
+        pygame.draw.polygon(self.window.window, pygame.Color(255, 255, 255, 255),
+                            ((indicator_position[0] + 4 * self.indicator_animation // 10, indicator_position[1]),
+                             (indicator_position[0] + 4 * self.indicator_animation // 10, indicator_position[1] + 48),
+                             (indicator_position[0] + 24 + 4 * self.indicator_animation // 10, indicator_position[1] + 24)))

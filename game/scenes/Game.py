@@ -5,7 +5,6 @@ import pygame
 
 import common.Scene
 import drawable.Font
-import game.objects.Indicator
 import game.objects.Stefan
 
 
@@ -22,7 +21,7 @@ class Game(common.Scene):
         self.poops_locations = None
         # objects
         self.stefan = game.objects.Stefan()
-        self.indicator = game.objects.Indicator("OptionsIndicator")
+        self.indicator_animation = 40
         # text/options related things
         self.font = drawable.Font("OptionsFont")
         self.font.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 48)
@@ -74,6 +73,7 @@ class Game(common.Scene):
             self.add_new_poop_location()
 
         self.input_cooldown -= 1
+        self.indicator_animation = (40 if self.indicator_animation == 0 else self.indicator_animation - 1)
         if self.is_option_chosen:
             self.is_option_chosen = False
 
@@ -112,7 +112,9 @@ class Game(common.Scene):
             pygame.draw.circle(self.window.window, pygame.Color(102, 70, 40, 255), poop, 16, 2)
 
         self.stefan.render(self.window.window)
-        self.indicator.render(self.window.window)
+        pygame.draw.line(self.window.window, pygame.Color(255, 255, 255, 255), (260, 632), (460, 632), 4)
+        pygame.draw.polygon(self.window.window, pygame.Color(255, 255, 255, 255),
+                            ((320, 668 + 8 * self.indicator_animation // 10), (400, 668 + 8 * self.indicator_animation // 10), (360, 648 + 8 * self.indicator_animation // 10)))
 
         for i in range(3):
             text_position = (120 + 240 * i, 600)

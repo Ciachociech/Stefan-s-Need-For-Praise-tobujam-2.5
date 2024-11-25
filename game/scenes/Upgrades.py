@@ -2,7 +2,6 @@ import pygame
 
 import common.Scene
 import drawable.Font
-import game.objects.Indicator
 
 
 class Upgrades(common.Scene):
@@ -15,7 +14,7 @@ class Upgrades(common.Scene):
         self.input_cooldown = 0
         self.options_counter = 0
         self.is_option_chosen = False
-        self.indicator = game.objects.Indicator("OptionsIndicator")
+        self.indicator_animation = 0
         # text related things
         self.font_bigger = drawable.Font("OptionsFont36")
         self.font_bigger.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 36)
@@ -75,6 +74,7 @@ class Upgrades(common.Scene):
 
     def update(self):
         self.input_cooldown -= 1
+        self.indicator_animation = (0 if self.indicator_animation == 40 else self.indicator_animation + 1)
         self.currency_title = "poops(Þ): " + str(self.statistics.currency)
 
         if self.is_closing_window:
@@ -183,5 +183,8 @@ class Upgrades(common.Scene):
             self.font_bigger.render_text(self.window.window, self.snack_ball_description[3], color, (640, frame_shift + 100),
                                          "topright")
 
-        self.indicator.position = (96, frame_shift + 124 + 120 * (self.options_counter % 4))
-        self.indicator.render(self.window.window)
+        indicator_position = (76, frame_shift + 124 + 120 * (self.options_counter % 4))
+        pygame.draw.polygon(self.window.window, pygame.Color(255, 255, 255, 255),
+                            ((indicator_position[0] + 4 * self.indicator_animation // 10, indicator_position[1]),
+                             (indicator_position[0] + 4 * self.indicator_animation // 10, indicator_position[1] + 48),
+                             (indicator_position[0] + 24 + 4 * self.indicator_animation // 10, indicator_position[1] + 24)))
