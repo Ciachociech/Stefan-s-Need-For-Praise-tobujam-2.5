@@ -4,6 +4,7 @@ import random
 import pygame
 
 import common.Scene
+import common.Object
 import drawable.Font
 
 
@@ -18,9 +19,11 @@ class SnackBall(common.Scene):
         self.is_set_velocity = False
         self.cooldown = 0
         self.score = 0
-        #
+        # font and graphics
         self.font = drawable.Font("OptionsFont20")
         self.font.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 20)
+        self.destruction_image = common.Object("DestructionImage", "assets/sprites/destruction32.png")
+        self.saturation_image = common.Object("SaturationImage", "assets/sprites/saturation32.png")
 
     def process_input(self, keyboard_input, joystick, mouse_input, mouse_position):
         if self.cooldown >= 0:
@@ -95,11 +98,8 @@ class SnackBall(common.Scene):
 
             self.font.render_text(self.window.window, "bounces: " + str(self.score), color, (360, 200), "midtop")
             if self.score > 0:
-                # TODO: replace with icons
-                pygame.draw.rect(self.window.window, pygame.Color(255, 255, 255, 255),
-                                 (320, 250, 32, 32))
-                pygame.draw.rect(self.window.window, pygame.Color(255, 255, 255, 255),
-                                 (320, 300, 32, 32))
+                self.destruction_image.render(self.window.window, (320, 250, 32, 32))
+                self.saturation_image.render(self.window.window, (320, 300, 32, 32))
 
                 self.font.render_text(self.window.window, "+" + "+" * int(0.35 * self.score), color, (360, 266), "midleft")
                 self.font.render_text(self.window.window, "+" + "+" * int(0.5 * self.score), color,(360, 316), "midleft")

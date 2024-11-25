@@ -1,5 +1,6 @@
 import pygame
 
+import common.Object
 import common.Scene
 
 
@@ -42,6 +43,10 @@ class Statistics(common.Scene):
         self.is_closing_window = False
         self.animation_frames = 0
         self.statistics = statistics
+        self.attention_image = common.Object("AttentionImage", "assets/sprites/attention64.png")
+        self.power_image = common.Object("PowerImage", "assets/sprites/power64.png")
+        self.destruction_image = common.Object("DestructionImage", "assets/sprites/destruction64.png")
+        self.saturation_image = common.Object("SaturationImage", "assets/sprites/saturation64.png")
 
     def process_input(self, keyboard_input, joystick, mouse_input, mouse_position):
         if keyboard_input[pygame.K_ESCAPE] or keyboard_input[pygame.K_x]:
@@ -106,12 +111,7 @@ class Statistics(common.Scene):
                                          (472, frame_shift + 119, 160, 40), width=4, border_top_right_radius=12,
                                          border_bottom_right_radius=12)
 
-        # TODO: replace with icons
-        pygame.draw.rect(self.window.window, pygame.Color(255, 255, 255, 255),
-                                         (92, frame_shift + 23, 64, 64))
-        pygame.draw.rect(self.window.window, pygame.Color(255, 255, 255, 255),
-                                         (92, frame_shift + 107, 64, 64))
-        pygame.draw.rect(self.window.window, pygame.Color(255, 255, 255, 255),
-                                         (384, frame_shift + 23, 64, 64))
-        pygame.draw.rect(self.window.window, pygame.Color(255, 255, 255, 255),
-                                         (384, frame_shift + 107, 64, 64))
+        self.attention_image.render(self.window.window, (92, frame_shift + 23, 64, 64))
+        self.power_image.render(self.window.window, (92, frame_shift + 107, 64, 64))
+        self.destruction_image.render(self.window.window, (384, frame_shift + 23, 64, 64))
+        self.saturation_image.render(self.window.window, (384, frame_shift + 107, 64, 64))
