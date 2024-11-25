@@ -1,3 +1,4 @@
+import asyncio
 from enum import IntEnum
 
 import pygame
@@ -35,7 +36,7 @@ class Instance:
 
     def __init__(self):
         pygame.init()
-        self.display = system.Display(720, 720, "bulonais-5")
+        self.display = system.Display(720, 720, "Stefan's Need For Praise")
         self.display.set_icon("assets/sprites/icon.png")
         self.display.frames = 60
 
@@ -61,7 +62,7 @@ class Instance:
         self.previousState = self.actualState
         self.actualState = new_state
 
-    def loop(self):
+    async def loop(self):
         while pygame.get_init():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -150,6 +151,7 @@ class Instance:
                     pass
 
             self.display.display_and_wait()
+            await asyncio.sleep(0)
 
         pygame.quit()
 

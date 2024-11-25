@@ -1,4 +1,7 @@
+import asyncio
+
 import game.Instance
 
 instance = game.Instance()
-instance.loop()
+asyncio.run(instance.loop())
+

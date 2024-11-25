@@ -1,4 +1,10 @@
-Project in progress for itch.io's ToBuJam 2.5 (https://itch.io/jam/tobujam-2dot5)
+IMPORTANT: THE main.exe can be falsely detected as a malware (occurs e.g.: for Avast)
+
+You have been chosen to care of mighty rabbit Stefan.
+Keep its needs in good shape or it will run away.
+You can pet, feed or do another activities to care Stefan.
+Moreover, its poops are valuable resource which can be used to increase quality of your service. 
+Good luck!
 
 Simple Tamagotchi-like game with base economic system, keep needs at reasonable level of virtual rabbit (Stefan).
 Time outside game is also counted and needs are decaying in real-time, so don't forget to care of this beloved pet.
@@ -10,10 +16,6 @@ HOW TO:
 [Z/SPACE] - confirm button
 [X/ESC] - exit button
 [WSAD/arrow keys] - navigate buttons
-
-Language: Python 3.12
-Libraries: pygame 2.6.1
-IDE: PyCharm Community Edition 2024.2.4
 
 EXTERNAL ASSETS:
 font (Nerko One) - https://fonts.google.com/specimen/Nerko+One
