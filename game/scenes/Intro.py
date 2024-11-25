@@ -1,5 +1,6 @@
 import pygame
 
+import common.Object
 import common.Scene
 import drawable.Font
 
@@ -9,9 +10,11 @@ class Intro(common.Scene):
     def __init__(self, window):
         super().__init__("IntroScene", window)
         self.skip_intro = False
+        self.hide_text = False
         self.line_advance = 0
         self.input_cooldown = 15
         self.advance_cooldown = 180
+        self.logo = common.Object("LogoObject", "assets/sprites/logo.png")
         # text related things
         self.font = drawable.Font("OptionsFont28")
         self.font.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 28)
@@ -29,10 +32,14 @@ class Intro(common.Scene):
             self.line_advance += 1
             self.input_cooldown = 30
             self.advance_cooldown = 180
-            if self.line_advance >= len(self.introduction):
+            if self.line_advance > len(self.introduction):
                 self.skip_intro = True
         elif keyboard_input[pygame.K_ESCAPE]:
-            self.skip_intro = True
+            if self.line_advance > len(self.introduction):
+                self.skip_intro = True
+            else:
+                self.line_advance = len(self.introduction)
+                self.hide_text = True
 
     def update(self):
         self.input_cooldown -= 1
@@ -45,8 +52,10 @@ class Intro(common.Scene):
             return True
 
     def render(self, color = pygame.Color(255, 255, 255, 255)):
-        for i in range(0, min(self.line_advance + 1, len(self.introduction))):
-            self.font.render_text(self.window.window, self.introduction[i], color, (20, 360 + 40 * i), "topleft")
+        if not self.hide_text:
+            for i in range(0, min(self.line_advance + 1, len(self.introduction))):
+                self.font.render_text(self.window.window, self.introduction[i], color, (20, 360 + 40 * i), "topleft")
 
         if self.line_advance >= len(self.introduction):
+            self.logo.render(self.window.window, (240, 60))
             self.font.render_text(self.window.window, "press SPACE to start a game", color, (360, 660), "center")
