@@ -49,7 +49,7 @@ class Statistics(common.Scene):
         self.saturation_image = common.Object("SaturationImage", "assets/sprites/saturation64.png")
 
     def process_input(self, keyboard_input, joystick, mouse_input, mouse_position):
-        if keyboard_input[pygame.K_ESCAPE] or keyboard_input[pygame.K_x]:
+        if self.animation_frames > 30 and (keyboard_input[pygame.K_ESCAPE] or keyboard_input[pygame.K_x] or keyboard_input[pygame.K_c]):
             self.is_closing_window = True
 
     def update(self):

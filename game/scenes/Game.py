@@ -19,6 +19,7 @@ class Game(common.Scene):
         self.main_options_counter = None
         self.action_options_counter = None
         self.is_option_chosen = None
+        self.is_stats_chosen = None
         self.poops_locations = None
         self.options_se = audio.Sound("OptionsSE", "assets/audio/click.wav")
         self.feeding_se = audio.Sound("OptionsSE", "assets/audio/crunch.wav")
@@ -30,7 +31,7 @@ class Game(common.Scene):
         # text/options related things
         self.font = drawable.Font("OptionsFont")
         self.font.load_font_from_file("assets/fonts/NerkoOne-Regular.ttf", 48)
-        self.main_options_texts = ["actions", "statistics", "upgrades", "save & exit"]
+        self.main_options_texts = ["actions", "statistics[C]", "upgrades", "save & exit"]
         self.action_options_texts = ["feed", "pet", "clean", "snack ball", "back"]
 
 
@@ -40,6 +41,7 @@ class Game(common.Scene):
         self.main_options_counter = 0
         self.action_options_counter = -1
         self.is_option_chosen = False
+        self.is_stats_chosen = False
         self.poops_locations = []
 
     def add_new_poop_location(self):
@@ -73,6 +75,10 @@ class Game(common.Scene):
             self.is_option_chosen = True
             self.input_cooldown = 15
             self.options_se.sound.play()
+        elif keyboard_input[pygame.K_c]:
+            self.is_stats_chosen = True
+            self.input_cooldown = 15
+            self.options_se.sound.play()
         elif keyboard_input[pygame.K_ESCAPE] or keyboard_input[pygame.K_x]:
             if self.main_options_counter >= 0:
                 self.main_options_counter = len(self.main_options_texts) - 1
@@ -91,6 +97,9 @@ class Game(common.Scene):
         self.indicator_animation = (40 if self.indicator_animation == 0 else self.indicator_animation - 1)
         if self.statistics.frames % 60 == 59:
             self.stefan.update()
+        if self.is_stats_chosen:
+            self.is_stats_chosen = False
+            return 2
         if self.is_option_chosen:
             self.is_option_chosen = False
 

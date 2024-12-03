@@ -18,7 +18,7 @@ class SnackBall(common.Scene):
         self.velocity = random.randint(0, 150)
         self.is_set_angle = False
         self.is_set_velocity = False
-        self.cooldown = 0
+        self.cooldown = 30
         self.score = 0
         self.bounce_se = audio.Sound("BounceSE", "assets/audio/kick.wav")
         self.bounce_se.sound.set_volume(0.25)
@@ -34,7 +34,7 @@ class SnackBall(common.Scene):
         if keyboard_input[pygame.K_z] or keyboard_input[pygame.K_SPACE]:
             if not self.is_set_angle:
                 self.is_set_angle = True
-                self.cooldown = 15
+                self.cooldown = 30
             else:
                 self.is_set_velocity = True
 
@@ -93,9 +93,12 @@ class SnackBall(common.Scene):
         # draw ball
         pygame.draw.circle(self.window.window, pygame.Color(255, 255, 255, 255), self.ball_position, 8, 2)
         if not self.is_set_angle:
+            pygame.draw.circle(self.window.window, pygame.Color(85, 85, 85, 255), self.ball_position, 75, 4)
             pygame.draw.line(self.window.window, pygame.Color(255, 255, 255, 255), self.ball_position,
                              (self.ball_position[0] + 75 * math.cos(self.angle), self.ball_position[1] + 75 * math.sin(self.angle)), 4)
         elif not self.is_set_velocity:
+            pygame.draw.line(self.window.window, pygame.Color(85, 85, 85, 255), self.ball_position,
+                             (self.ball_position[0] + 150 * math.cos(self.angle), self.ball_position[1] + 150 * math.sin(self.angle)), 4)
             pygame.draw.line(self.window.window, pygame.Color(255, 255, 255, 255), self.ball_position,
                                (self.ball_position[0] + self.velocity * math.cos(self.angle), self.ball_position[1] + self.velocity * math.sin(self.angle)), 4)
 
