@@ -1,5 +1,4 @@
 # Project for itch.io's ToBuJam 2.5 (https://itch.io/jam/tobujam-2dot5)
-
 Simple Tamagotchi-like game with base economic system, keep needs at reasonable level of virtual rabbit (Stefan).
 Time outside game is also counted and needs are decaying in real-time, so don't forget to care of this beloved pet.
 There is included also one mini game, unfortunately I wasn't able to create two more. 
@@ -8,16 +7,18 @@ I don't plan to improve this game, there is a little chance to fix critical bugs
 
 # HOW TO:
 [Z/SPACE] - confirm button
+
 [X/ESC] - exit button
+
 [WSAD/arrow keys] - navigate buttons
-[S] - open statistics window (only in menu during options choice)
+
+[C] - open statistics window (only in menu during options choice)
 
 Language: Python 3.12
 Libraries: pygame 2.6.1
 IDE: PyCharm Community Edition 2024.2.4
 
 # EXTERNAL ASSETS:
-
 font (Nerko One) - https://fonts.google.com/specimen/Nerko+One
 
 audio:
